@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BRAND } from "@/content/brand";
 import { SITE } from "@/content/site";
 import type { OsPart } from "@/content/types";
 import { getCopy, partHref, pad2 } from "./parts";
@@ -66,6 +67,17 @@ export const organizationLd = () => ({
   slogan: SITE.orgTagline,
 });
 
+export const websiteLd = () => ({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE.url}/#website`,
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.homeDescription,
+  inLanguage: "en",
+  publisher: { "@id": ORG_ID },
+});
+
 export const softwareApplicationLd = () => ({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -75,6 +87,8 @@ export const softwareApplicationLd = () => ({
   operatingSystem: "Web",
   url: SITE.url,
   description: SITE.homeDescription,
+  inLanguage: "en",
+  featureList: [...BRAND.coreAreas],
   publisher: { "@id": ORG_ID },
   // No offers, ratings or reviews: none exist in the product specification.
 });
