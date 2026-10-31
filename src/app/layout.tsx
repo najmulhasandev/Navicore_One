@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: { default: SITE.homeTitle, template: `%s | ${SITE.name}` },
   description: SITE.homeDescription,
   applicationName: SITE.name,
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
   verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
 };
 

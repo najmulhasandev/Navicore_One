@@ -4,7 +4,7 @@ import { moduleGroups } from "@/content/module-groups";
 import { groupSlugAnchor } from "@/content/messages";
 import { getMessages } from "@/i18n/messages";
 import { allParts, functionLabels, getCopy, mustGetPart, partHref, partsInGroup, pad2 } from "@/lib/parts";
-import { organizationLd, pageMetadata, softwareApplicationLd } from "@/lib/seo";
+import { organizationLd, pageMetadata, softwareApplicationLd, websiteLd } from "@/lib/seo";
 import { DeviceWall, type WallScreen } from "@/components/DeviceWall";
 import { FlowDiagram } from "@/components/FlowDiagram";
 import { HeroVisual } from "@/components/HeroVisual";
@@ -45,7 +45,7 @@ export default function HomePage() {
 
   return (
     <>
-      <JsonLd data={[organizationLd(), softwareApplicationLd()]} />
+      <JsonLd data={[organizationLd(), websiteLd(), softwareApplicationLd()]} />
 
       {/* 1. Hero */}
       <section className="bg-hero overflow-hidden">

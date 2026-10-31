@@ -21,7 +21,7 @@ export const globalTodos: readonly GlobalTodo[] = [
   { id: "G04", topic: "Older presentation claims not used", beforeLaunch: true,
     note: "The earlier presentation zip contains statistics and claims that the guide does not support (for example project counts, countries, on-time delivery, delivery days). None of them is used here. If that older site is still public, confirm each claim with evidence or remove it." },
   { id: "G05", topic: "Domain", beforeLaunch: true,
-    note: "The brief says os.navicore.co; the older presentation used a different host. Confirm the final domain, any redirects from the old one, and set NEXT_PUBLIC_SITE_URL." },
+    note: "Production is one.navicoresoftware.com (navicoreone.vercel.app redirects to it). Make sure NEXT_PUBLIC_SITE_URL in Vercel is unset or set to https://one.navicoresoftware.com, then add the domain in Google Search Console." },
   { id: "G06", topic: "Company site URL (www or not)", beforeLaunch: true,
     note: "Organization JSON-LD and the footer link use https://www.navicore.co (from the brief). Confirm whether www is the canonical form; set NEXT_PUBLIC_ORG_URL." },
   { id: "G07", topic: "Where enquiries go", beforeLaunch: true,

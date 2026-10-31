@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { SITE } from "@/content/site";
 import { getMessages } from "@/i18n/messages";
 import { allow } from "@/lib/rate-limit";
 import {
@@ -53,7 +54,7 @@ async function deliver(data: ContactInput): Promise<boolean> {
     const res = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ source: "os.navicore.co", receivedAt: new Date().toISOString(), ...data }),
+      body: JSON.stringify({ source: new URL(SITE.url).hostname, receivedAt: new Date().toISOString(), ...data }),
       signal: AbortSignal.timeout(8000),
       cache: "no-store",
     });
