@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/*
+ * NAVICORE ONE: light, warm, premium.
+ * The default Tailwind palette is switched off so only the brand palette can be used.
+ * Contrast (WCAG 2.x, computed): ink on white/blush/pink 18.3 / 17.3 / 14.1; maroon 12.1 / 11.5 / 9.3;
+ * red 5.9 / 5.6 / 4.5 (use red text on white or blush, maroon text on pink); white on red 5.9; white on maroon 12.1.
+ * Rose (#F4A9BA) is decorative only: borders, glows, fills. Never text.
+ */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-blush: #fff7f9;
+  --color-baby-pink: #fadadf;
+  --color-rose: #f4a9ba;
+  --color-red: #c8102e;
+  --color-maroon: #6b1220;
+  --color-ink: #2a0a10;
+  /* Derived from ink, for secondary text: 7.8 on white, 7.4 on blush, 6.0 on baby-pink. */
+  --color-ink-soft: #6a4a50;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-display-face), ui-serif, Georgia, "Times New Roman", serif;
+
+  --shadow-soft: 0 1px 2px rgb(107 18 32 / 0.06), 0 12px 32px -12px rgb(107 18 32 / 0.18);
+  --shadow-float: 0 2px 4px rgb(107 18 32 / 0.08), 0 28px 60px -20px rgb(107 18 32 / 0.35);
+  --shadow-glow: 0 0 0 1px rgb(244 169 186 / 0.6), 0 12px 40px -8px rgb(244 169 186 / 0.7);
+}
+
+/* Plain CSS aliases of the brand tokens, for the few places that use hand-written CSS. */
+:root {
+  --white: var(--color-white);
+  --blush: var(--color-blush);
+  --baby-pink: var(--color-baby-pink);
+  --rose: var(--color-rose);
+  --red: var(--color-red);
+  --maroon: var(--color-maroon);
+  --ink: var(--color-ink);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-blush);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-maroon);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible {
+    outline: 3px solid var(--color-maroon);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection { background: var(--color-baby-pink); color: var(--color-ink); }
+  summary { cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+}
+
+@layer components {
+  /* ── Buttons ─────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    min-height: 48px; padding: .75rem 1.5rem; border-radius: 999px;
+    font-weight: 600; font-size: 1rem; line-height: 1.1; text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-red { background: var(--color-red); color: var(--color-white); box-shadow: 0 10px 24px -10px rgb(200 16 46 / .6); }
+  .btn-red:hover { box-shadow: 0 14px 30px -10px rgb(200 16 46 / .75); }
+  .btn-maroon { background: var(--color-maroon); color: var(--color-white); }
+  .btn-outline { background: var(--color-white); color: var(--color-maroon); box-shadow: inset 0 0 0 2px var(--color-maroon); }
+  .btn-outline:hover { background: var(--color-baby-pink); }
+  .btn-light { background: var(--color-white); color: var(--color-maroon); }
+  .btn-on-maroon { background: transparent; color: var(--color-white); box-shadow: inset 0 0 0 2px var(--color-baby-pink); }
+  .btn-on-maroon:hover { background: rgb(255 255 255 / .12); }
+  .btn-sm { min-height: 40px; padding: .5rem 1.15rem; font-size: .9rem; }
+
+  /* ── Section backdrops: soft pink-to-white gradients ─────── */
+  .bg-section-soft { background: linear-gradient(180deg, var(--color-white) 0%, var(--color-blush) 55%, color-mix(in srgb, var(--color-baby-pink) 45%, var(--color-blush)) 100%); }
+  .bg-section-pink { background: linear-gradient(180deg, var(--color-blush) 0%, color-mix(in srgb, var(--color-baby-pink) 70%, var(--color-white)) 100%); }
+  .bg-hero { background:
+      radial-gradient(60rem 30rem at 85% -10%, color-mix(in srgb, var(--color-rose) 38%, transparent), transparent 70%),
+      radial-gradient(40rem 24rem at 0% 0%, color-mix(in srgb, var(--color-baby-pink) 75%, transparent), transparent 70%),
+      var(--color-blush); }
+
+  /* ── Floating UI: drift (inner) + scroll parallax (outer) ── */
+  .float { transform: rotate(var(--rot, 0deg)); animation: drift var(--dur, 7s) ease-in-out var(--delay, 0s) infinite; will-change: transform; }
+  .parallax { will-change: transform; }
+
+  /* Below-the-fold sections are not rendered until they are near the viewport (cheaper first paint). */
+  .defer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+  /* ── Tilted device wall ──────────────────────────────────── */
+  .wall {
+    perspective: 1500px;
+    -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 100%);
+            mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 100%);
+  }
+  .wall-plane {
+    transform-style: preserve-3d;
+    transform: rotateX(54deg) rotateZ(-26deg) scale(var(--wall-scale, 1));
+    animation: wall-drift 22s ease-in-out infinite alternate;
+  }
+
+  /* ── Flow diagram connectors ─────────────────────────────── */
+  .flow-step .flow-arrow-r { display: none; }
+  .flow-step .flow-arrow-d { display: block; }
+  .flow-step[data-last] .flow-arrow-d { display: none; }
+  @media (min-width: 640px) {
+    .flow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flow-step .flow-arrow-d { display: none; }
+    .flow-step:not([data-last]):not([data-end-md]) .flow-arrow-r { display: block; }
+  }
+  @media (min-width: 1024px) {
+    .flow-grid { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
+    .flow-step[data-end-md]:not([data-end-lg]):not([data-last]) .flow-arrow-r { display: block; }
+    .flow-step[data-end-lg] .flow-arrow-r { display: none; }
+  }
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg)); }
+  50%      { transform: translate3d(0, calc(var(--amp, 10px) * -1), 0) rotate(var(--rot, 0deg)); }
+}
+@keyframes wall-drift {
+  from { translate: 0 0; }
+  to   { translate: 0 -18px; }
+}
+@keyframes parallax-up {
+  to { transform: translate3d(0, calc(var(--depth, 0) * -80px), 0); }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Scroll-driven parallax and reveals: progressive enhancement, no JavaScript. */
+@supports (animation-timeline: scroll()) {
+  .parallax {
+    animation: parallax-up linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 90vh;
+  }
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+/* Reduced motion: no drift, no parallax, no reveal, no 3D motion. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .float, .parallax, .reveal, .wall-plane, .btn { animation: none !important; transition: none !important; }
+  .wall-plane { transform: rotateX(40deg) rotateZ(-18deg) scale(var(--wall-scale, 1)); }
+}
+
+/* Print: drop decorative layers. */
+@media print { .float, .wall, .sticky-cta { display: none !important; } }
