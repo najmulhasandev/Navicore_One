@@ -3,9 +3,9 @@
 Needs Python Playwright with Chromium:  pip install playwright && playwright install chromium
 Usage:  python3 scripts/verify-motion.py http://localhost:3000
 Pass criteria: full_getAnimations_at_1.7s >= 12, entrance_max_end_ms <= 1100, scroll_max_offscreen_running == 0,
-toggled_off_infinite == 0, os_reduced_infinite == 0.
-Measures: getAnimations() counts (full/reduced), entrance timing, off-screen infinite animations,
-Motion toggle + persistence, OS reduced-motion default, no-JS state of the hero.
+os_reduced_attr == "full", os_reduced_infinite >= 12, footer_buttons == 0.
+Measures: getAnimations() counts, entrance timing, off-screen infinite animations,
+that motion stays on when the OS asks for reduced motion (always-on policy), and that there is no motion toggle.
 """
 import json, sys
 from playwright.sync_api import sync_playwright
@@ -92,36 +92,9 @@ def run():
         out["scroll_samples"] = samples
         out["scroll_max_offscreen_running"] = max(s["running_infinite_offscreen"] for s in samples)
 
-        # ---------- TOGGLE ----------
-        pg.evaluate("() => window.scrollTo(0, document.documentElement.scrollHeight)")
-        btn = pg.locator("footer button").first
-        out["toggle_label_before"] = btn.inner_text()
-        out["toggle_aria"] = {"pressed": btn.get_attribute("aria-pressed"), "label": btn.get_attribute("aria-label")}
-        btn.click()
-        pg.wait_for_timeout(300)
-        out["after_click_attr"] = pg.evaluate("() => document.documentElement.dataset.motion")
-        out["after_click_storage"] = pg.evaluate("() => localStorage.getItem('navicore-motion')")
-        out["toggle_label_after"] = btn.inner_text()
-        pg.reload(wait_until="load")
-        pg.wait_for_timeout(500)
-        out["after_reload_attr"] = pg.evaluate("() => document.documentElement.dataset.motion")
-        pg.wait_for_timeout(1500)
-        rl = pg.evaluate(LIST_JS)
-        out["toggled_off_getAnimations"] = len(rl)
-        out["toggled_off_names"] = summarize(rl)
-        out["toggled_off_infinite"] = sum(1 for i in rl if i["infinite"])
-        # toggle back on and check animations return (no reload)
-        pg.evaluate("() => window.scrollTo(0, 0)")
-        pg.locator("footer button").first.scroll_into_view_if_needed()
-        pg.locator("footer button").first.click()
-        pg.wait_for_timeout(500)
-        out["toggled_on_again_attr"] = pg.evaluate("() => document.documentElement.dataset.motion")
-        pg.evaluate("() => window.scrollTo(0, 0)")
-        pg.wait_for_timeout(800)
-        out["toggled_on_again_infinite_running"] = sum(1 for i in pg.evaluate(LIST_JS) if i["infinite"] and i["state"] == "running")
         ctx.close()
 
-        # ---------- OS reduced-motion default, no stored choice ----------
+        # ---------- OS reduced-motion: motion must stay on (always-on policy) ----------
         ctx = b.new_context(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
         pg = ctx.new_page()
         pg.goto(BASE + "/", wait_until="load")
@@ -131,16 +104,7 @@ def run():
         out["os_reduced_getAnimations"] = len(rl)
         out["os_reduced_names"] = summarize(rl)
         out["os_reduced_infinite"] = sum(1 for i in rl if i["infinite"])
-        # transforms in reduced mode: sample a few elements
-        out["os_reduced_transforms"] = pg.evaluate("""() => {
-          const q = s => Array.from(document.querySelectorAll(s)).slice(0,3).map(e => getComputedStyle(e).transform + ' | ' + getComputedStyle(e).translate);
-          return {float: q('.fc-float'), tilt: q('.fc-tilt'), enter: q('.fc-enter'), plane: q('.wall-plane'), btn: q('.btn')};
-        }""")
-        # a user who chose "On" with OS reduced -> full
-        pg.evaluate("() => localStorage.setItem('navicore-motion','on')")
-        pg.reload(wait_until="load")
-        pg.wait_for_timeout(300)
-        out["os_reduced_but_user_on_attr"] = pg.evaluate("() => document.documentElement.dataset.motion")
+        out["footer_buttons"] = pg.locator("footer button").count()
         ctx.close()
 
         b.close()
