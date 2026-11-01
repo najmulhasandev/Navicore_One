@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FOUNDERS } from "@/content/team";
+import { FOUNDER } from "@/content/team";
 import { getMessages } from "@/i18n/messages";
 import { allParts, getCopy, partHref } from "@/lib/parts";
 import { SectionHeading } from "./ui/SectionHeading";
@@ -7,7 +7,7 @@ import { StatusStrip } from "./StatusStrip";
 
 /**
  * "Back NAVICORE ONE": facts only. What exists and what is later are read from the status label of each part;
- * the founders are the two named by the founder. No customers, numbers, prices or traction are shown.
+ * only the founder is named (src/content/team.ts). No customers, numbers, prices or traction are shown.
  */
 export function SponsorSection() {
   const m = getMessages();
@@ -57,14 +57,10 @@ export function SponsorSection() {
 
           <article data-reveal data-glow style={{ "--i": 2 } as React.CSSProperties} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
             <h3 className="font-display text-xl font-semibold">{t.teamTitle}</h3>
-            <ul className="mt-4 space-y-4">
-              {FOUNDERS.map((f) => (
-                <li key={f.name}>
-                  <p className="font-display text-lg font-semibold text-maroon">{f.name}</p>
-                  <p className="text-sm text-ink-soft">{f.role}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4">
+              <p className="font-display text-lg font-semibold text-maroon">{FOUNDER.name}</p>
+              <p className="text-sm text-ink-soft">{FOUNDER.role}</p>
+            </div>
           </article>
         </div>
 

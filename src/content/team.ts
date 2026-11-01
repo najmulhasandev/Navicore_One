@@ -1,5 +1,5 @@
-/** Founders, as stated by the founder. Roles are shown exactly as written. */
-export const FOUNDERS = [
-  { name: "Najmul Hasan", role: "Founder, CEO & CPO" },
-  { name: "Nusrat Jahan Bably", role: "Co-Founder & Managing Director" },
-] as const;
+/**
+ * Public attribution. Shown exactly as written; do not add a title or a person without the founder's say-so.
+ * The co-founder is deliberately not listed: no name, photo, link or handle appears anywhere on the site.
+ */
+export const FOUNDER = { name: "Najmul Hasan", role: "Founder & CEO" } as const;
