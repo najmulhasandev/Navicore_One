@@ -1,13 +1,13 @@
 # NAVICORE ONE motion system
 
 Source: `src/app/motion.css` (all CSS), `src/components/motion/MotionController.tsx` (about 3 KB gzipped, plain DOM),
-`src/components/motion/MotionToggle.tsx`, `src/lib/motion-init.ts` (inline policy script).
+`src/lib/motion-init.ts` (inline policy script).
 
 ## Policy
-`<html data-motion="full|reduced">` is set before first paint by the inline script in `<head>`.
-Default = OS `prefers-reduced-motion`. The footer **Motion: On/Off** switch overrides it and is saved in `localStorage` (try/catch).
-- **full**: translate, scale, parallax, float, 3D and loops allowed.
-- **reduced**: no translate, scale, parallax, float, 3D or long loops. Kept: 150-200 ms opacity fades, colour transitions, focus styles.
+Motion is **always on**: the inline script sets `<html data-motion="full">` before first paint, ignoring the OS
+"reduce motion" setting. There is no toggle. The `reduced` rules in `motion.css` (opacity fades and colour changes only,
+no translate, scale, parallax, float, 3D or loops) are kept as dead code so an OS check or a toggle can be restored by
+changing `src/lib/motion-init.ts`.
 No blanket `animation: none !important` anywhere. Only transform and opacity are animated. Without JS the page is visible and still.
 
 ## Performance rules
@@ -38,5 +38,5 @@ No blanket `animation: none !important` anywhere. Only transform and opacity are
 | 17 | Status strip count-up (JS) and bars (`m-bar`) | strip enters viewport, once | 1.1 s / 1.2 s | final numbers and full bars at once |
 | 18 | Smooth anchors | in-page links | browser | `scroll-behavior: auto` |
 
-Verification (Playwright, 1440x900, full mode): `document.getAnimations().length` was 48 about 1.6 s after load of `/`;
-in reduced mode only `m-fade` and `m-failsafe` exist and 0 are infinite.
+Verification (Playwright, 1440x900): `document.getAnimations().length` was 48 about 1.6 s after load of `/`;
+with the OS reduce-motion setting on, motion still runs (always-on policy).

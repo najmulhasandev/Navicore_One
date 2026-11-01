@@ -249,11 +249,6 @@ html[data-motion="full"][data-js] .status-bar {
 }
 html[data-motion="full"][data-js] .is-in .status-bar { animation-play-state: running; }
 
-/* ── Motion toggle label (CSS-switched, so no hydration mismatch) ── */
-.mo-off { display: none; }
-html[data-motion="reduced"] .mo-on { display: none; }
-html[data-motion="reduced"] .mo-off { display: inline; }
-
 /* ── Reduced: calm, finished page. Fades and colour changes remain. ── */
 html[data-motion="reduced"] { scroll-behavior: auto; }
 html[data-motion="reduced"] .fc-float,
