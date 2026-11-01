@@ -11,8 +11,9 @@ export const SITE = {
   tagline: BRAND.tagline,
   orgTagline: BRAND.orgTagline,
   orgName: "NAVICORE",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://one.navicoresoftware.com",
-  orgUrl: process.env.NEXT_PUBLIC_ORG_URL ?? "https://www.navicore.co",
+  // `||` (not `??`) so that an empty value in a hosting dashboard falls back to the default instead of breaking `new URL("")`.
+  url: (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://one.navicoresoftware.com").replace(/\/+$/, ""),
+  orgUrl: (process.env.NEXT_PUBLIC_ORG_URL?.trim() || "https://www.navicore.co").replace(/\/+$/, ""),
   locale: "en_US",
   ogImage: BRAND.ogImage,
 } as const;
