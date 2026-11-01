@@ -58,7 +58,7 @@ export default function PartnersPage() {
             const part = mustGetPart(it.slug);
             return (
               <li key={it.slug}>
-                <Link href={partHref(part)} className="group block h-full rounded-2xl bg-white p-5 shadow-soft ring-1 ring-baby-pink transition hover:shadow-glow">
+                <Link href={partHref(part)} data-glow className="group block h-full rounded-2xl bg-white p-5 shadow-soft ring-1 ring-baby-pink hover:shadow-glow">
                   <h3 className="font-display text-lg font-semibold group-hover:underline">{it.title}</h3>
                   <p className="mt-1 text-[0.95rem] text-ink-soft">{it.text}</p>
                   <span className="mt-3 block text-sm font-semibold text-red">Part {pad2(part.number)} →</span>
@@ -67,6 +67,15 @@ export default function PartnersPage() {
             );
           })}
         </ul>
+      </section>
+
+      <section aria-labelledby="sponsor" className="mt-16 rounded-3xl bg-baby-pink p-7 sm:p-9">
+        <h2 id="sponsor" className="font-display text-2xl font-semibold sm:text-3xl">{p.sponsor.title}</h2>
+        <p className="mt-3 max-w-2xl text-maroon">{p.sponsor.text}</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/contact?intent=sponsor" className="btn btn-maroon">{p.sponsor.cta}</Link>
+          <Link href="/#build-status" className="btn btn-outline">{p.sponsor.link}</Link>
+        </div>
       </section>
 
       <section aria-labelledby="form" className="mt-16 scroll-mt-24">
