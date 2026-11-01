@@ -94,9 +94,10 @@ export default function HomePage() {
       </section>
 
       {/* 1b. Looping band of the 13 module groups */}
-      <section className="bg-white py-8" aria-label={h.marquee.label}>
+      {/* The marquee itself is the labelled region; this wrapper stays unlabelled so the landmark is not duplicated. */}
+      <div className="bg-white py-8">
         <ModuleMarquee />
-      </section>
+      </div>
 
       {/* 2. Problem */}
       <section className="bg-white py-20 sm:py-28 defer" aria-labelledby="problem">
