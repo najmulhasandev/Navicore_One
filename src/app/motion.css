@@ -1,8 +1,8 @@
 /*
  * NAVICORE ONE motion system. Full inventory: docs/MOTION.md.
  *
- * Policy: <html data-motion="full | reduced">, set before first paint by the inline script in layout.tsx
- * (OS preference by default, overridable with the footer toggle).
+ * Policy: <html data-motion="full | reduced">, set before first paint by the inline script in layout.tsx.
+ * Motion is always on ("full"): src/lib/motion-init.ts ignores the OS preference. The "reduced" rules are kept, unused.
  *  - full:    translate / scale / parallax / float / 3D / loops allowed.
  *  - reduced: no translate, scale, parallax, float, 3D or long loops. KEPT: 150-200 ms opacity fades,
  *             colour transitions and focus styles.
@@ -248,13 +248,6 @@ html[data-motion="full"][data-js] .status-bar {
   animation: m-bar 1.2s var(--m-ease) calc(var(--i, 0) * 110ms) both paused;
 }
 html[data-motion="full"][data-js] .is-in .status-bar { animation-play-state: running; }
-
-/* ── Motion toggle label (CSS-switched, so no hydration mismatch) ── */
-.mo-off { display: none; }
-html[data-motion="reduced"] .mo-on { display: none; }
-html[data-motion="reduced"] .mo-off { display: inline; }
-/* The switch needs script to work, so it is not offered when script is off. */
-html:not([data-js]) .motion-toggle { display: none; }
 
 /* ── Reduced: calm, finished page. Fades and colour changes remain. ── */
 html[data-motion="reduced"] { scroll-behavior: auto; }

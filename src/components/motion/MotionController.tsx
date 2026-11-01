@@ -162,17 +162,11 @@ export function MotionController() {
         pos.active = false;
         kick();
       };
-      const onMode = () => {
-        pos.active = isFull() ? pos.active : false;
-        kick();
-      };
       document.addEventListener("pointermove", onMove, { passive: true });
       document.documentElement.addEventListener("pointerleave", onLeave);
-      window.addEventListener("navicore-motion", onMode);
       cleanups.push(() => {
         document.removeEventListener("pointermove", onMove);
         document.documentElement.removeEventListener("pointerleave", onLeave);
-        window.removeEventListener("navicore-motion", onMode);
       });
     }
 
