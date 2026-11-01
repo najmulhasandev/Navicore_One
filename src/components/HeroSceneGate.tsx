@@ -16,7 +16,6 @@ type NavigatorHints = Navigator & { connection?: ConnectionInfo; deviceMemory?: 
 function deviceIsCapable(): boolean {
   const mq = (q: string) => window.matchMedia(q).matches;
   if (!mq("(min-width: 1024px)")) return false;
-  if (mq("(prefers-reduced-motion: reduce)")) return false;
   if (document.documentElement.getAttribute("data-motion") !== "full") return false;
   const nav = navigator as NavigatorHints;
   if (nav.connection?.saveData) return false;
@@ -65,19 +64,11 @@ export default function HeroSceneGate() {
     if ("requestIdleCallback" in window) idle = window.requestIdleCallback(start, { timeout: 2500 });
     else timer = setTimeout(start, 1500);
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onChange = () => {
-      if (reduce.matches || document.documentElement.getAttribute("data-motion") !== "full") setEnabled(false);
-    };
-    reduce.addEventListener("change", onChange);
-    window.addEventListener("navicore-motion", onChange);
 
     return () => {
       cancelled = true;
       if (idle !== undefined) window.cancelIdleCallback(idle);
       if (timer) clearTimeout(timer);
-      reduce.removeEventListener("change", onChange);
-      window.removeEventListener("navicore-motion", onChange);
     };
   }, []);
 

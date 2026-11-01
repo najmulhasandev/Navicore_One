@@ -270,12 +270,6 @@ export const en = {
     companyLink: "NAVICORE website",
     privacy: "Privacy",
     contact: "Contact",
-    motion: {
-      on: "Motion: On",
-      off: "Motion: Off",
-      announceOn: "Motion is on.",
-      announceOff: "Motion is off.",
-    },
     disclaimer:
       "Layouts on this site are illustrative, not live screenshots. Statuses follow the NAVICORE ONE product specification.",
   },
