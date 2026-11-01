@@ -53,7 +53,10 @@ async function deliver(data: ContactInput): Promise<Delivery> {
       console.info("[contact:dev] LEAD_WEBHOOK_URL not set; enquiry from", data.intent, "not forwarded.");
       return "sent";
     }
-    console.warn("[contact] LEAD_WEBHOOK_URL is not set in production: an enquiry could not be delivered and the visitor was shown the email fallback.");
+    console.warn(
+      `[contact] LEAD_WEBHOOK_URL is not set in production: a "${data.intent}" enquiry was NOT delivered. The visitor saw the "unavailable" message` +
+        (process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ? " with an email fallback." : " without an email fallback (NEXT_PUBLIC_CONTACT_EMAIL is not set)."),
+    );
     return "unconfigured";
   }
   try {

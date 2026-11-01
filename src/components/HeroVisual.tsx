@@ -33,7 +33,7 @@ export function HeroVisual() {
         <FloatingCard className="absolute left-[44%] top-[-3%] z-0 hidden opacity-80 sm:block" depth={0.15} tilt={0.35} shift={5} amp={12} duration={11} delay={-3} rot={-2} enter={5} cardClassName={chip}>
           {group("people")}
         </FloatingCard>
-        <FloatingCard className="absolute bottom-[26%] right-[-3%] z-0 hidden opacity-80 sm:block" depth={0.15} tilt={0.35} shift={5} amp={12} duration={10} delay={-6} rot={2} enter={6} cardClassName={chip}>
+        <FloatingCard className="absolute bottom-[12%] left-[49%] z-0 hidden opacity-80 sm:block" depth={0.15} tilt={0.35} shift={5} amp={12} duration={10} delay={-6} rot={2} enter={6} cardClassName={chip}>
           {group("finance")}
         </FloatingCard>
 
