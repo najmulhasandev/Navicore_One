@@ -1,6 +1,6 @@
 /** Pure validation for the contact / partner form. No framework imports, so it can be tested alone. */
 
-export const INTENTS = ["demo", "partner", "question"] as const;
+export const INTENTS = ["demo", "partner", "sponsor", "question"] as const;
 export type Intent = (typeof INTENTS)[number];
 export type FieldName = "name" | "email" | "company" | "role" | "message" | "intent";
 
@@ -18,6 +18,8 @@ export interface ContactState {
   message?: string;
   errors?: Partial<Record<FieldName, string>>;
   values?: Partial<Record<FieldName, string>>;
+  /** Set when delivery is not configured: the client shows a mailto fallback instead of a dead end. */
+  fallback?: { email: string | null };
 }
 
 export const initialContactState: ContactState = { status: "idle" };

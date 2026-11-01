@@ -36,7 +36,7 @@ export function pageMetadata(m: PageMeta): Metadata {
       description: m.description,
       url: m.path,
       locale: SITE.locale,
-      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: SITE.fullName }],
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: SITE.fullName, type: "image/webp" }],
     },
     twitter: { card: "summary_large_image", title, description: m.description, images: [SITE.ogImage] },
   };

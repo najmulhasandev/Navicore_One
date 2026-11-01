@@ -40,15 +40,21 @@ async function turnstileOk(token: string, ip: string): Promise<boolean> {
   }
 }
 
-/** Forward the enquiry. Returns false if there is nowhere configured to send it (production). */
-async function deliver(data: ContactInput): Promise<boolean> {
+type Delivery = "sent" | "failed" | "unconfigured";
+
+/**
+ * Forward the enquiry. "unconfigured" means production has no LEAD_WEBHOOK_URL: the form then shows a mailto
+ * fallback instead of pretending to succeed, and the server logs a warning so the gap is visible in the logs.
+ */
+async function deliver(data: ContactInput): Promise<Delivery> {
   const url = process.env.LEAD_WEBHOOK_URL;
   if (!url) {
     if (process.env.NODE_ENV !== "production") {
       console.info("[contact:dev] LEAD_WEBHOOK_URL not set; enquiry from", data.intent, "not forwarded.");
-      return true;
+      return "sent";
     }
-    return false;
+    console.warn("[contact] LEAD_WEBHOOK_URL is not set in production: an enquiry could not be delivered and the visitor was shown the email fallback.");
+    return "unconfigured";
   }
   try {
     const res = await fetch(url, {
@@ -58,9 +64,9 @@ async function deliver(data: ContactInput): Promise<boolean> {
       signal: AbortSignal.timeout(8000),
       cache: "no-store",
     });
-    return res.ok;
+    return res.ok ? "sent" : "failed";
   } catch {
-    return false;
+    return "failed";
   }
 }
 
@@ -92,6 +98,11 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   }
 
   // 6. Deliver.
-  if (!(await deliver(v.data))) return { status: "error", message: m.form.unavailable, values: v.data };
-  return { status: "ok", message: m.form.success };
+  const result = await deliver(v.data);
+  if (result === "sent") return { status: "ok", message: m.form.success };
+  const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null;
+  if (result === "unconfigured" || email) {
+    return { status: "error", message: email ? m.form.unavailableEmail : m.form.unavailable, values: v.data, fallback: { email } };
+  }
+  return { status: "error", message: m.form.unavailable, values: v.data };
 }
