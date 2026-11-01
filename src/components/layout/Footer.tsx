@@ -3,7 +3,6 @@ import { SITE } from "@/content/site";
 import { moduleGroups } from "@/content/module-groups";
 import { groupSlugAnchor } from "@/content/messages";
 import { getMessages } from "@/i18n/messages";
-import { MotionToggle } from "@/components/motion/MotionToggle";
 import { Logo } from "./Logo";
 
 export function Footer() {
@@ -50,10 +49,7 @@ export function Footer() {
           </ul>
         </nav>
       </div>
-      <div className="mx-auto mt-12 flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-white/20 px-4 pt-6 sm:px-6">
-        <p className="max-w-3xl text-sm text-baby-pink">{m.footer.disclaimer}</p>
-        <MotionToggle labels={m.footer.motion} />
-      </div>
+      <p className="mx-auto mt-12 max-w-7xl border-t border-white/20 px-4 pt-6 text-sm text-baby-pink sm:px-6">{m.footer.disclaimer}</p>
     </footer>
   );
 }
