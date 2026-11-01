@@ -30,7 +30,7 @@ export function DeviceWall({ screens, focal }: DeviceWallProps) {
 
   return (
     <div aria-hidden="true" className="relative mx-auto h-[26rem] w-full max-w-6xl overflow-hidden sm:h-[34rem] lg:h-[40rem]">
-      <div className="wall absolute inset-0 grid place-items-center [--wall-scale:0.62] sm:[--wall-scale:0.85] lg:[--wall-scale:1]">
+      <div data-live="lazy" data-tilt-root className="wall absolute inset-0 grid place-items-center [--wall-scale:0.62] sm:[--wall-scale:0.85] lg:[--wall-scale:1]">
         <div className="wall-plane grid w-[64rem] grid-cols-3 gap-8">
           {grid.map((s, i) =>
             s ? (

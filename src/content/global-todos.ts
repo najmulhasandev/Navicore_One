@@ -49,9 +49,11 @@ export const globalTodos: readonly GlobalTodo[] = [
   { id: "G18", topic: "No certifications or compliance claims", beforeLaunch: false,
     note: "No certification, compliance or security-standard claims are made anywhere. If you want any, provide the evidence first." },
   { id: "G19", topic: "Logo", beforeLaunch: false,
-    note: "No logo files were provided; the header uses a plain wordmark with a simple geometric mark. Provide the official logo and favicon." },
+    note: "The official brand-kit logo is integrated as SVG, with the wordmark converted to outlines so it renders without the Inter Display font (Medium for NAVICORE, SemiBold for ONE). Confirm this matches the master files." },
   { id: "G20", topic: "Bot protection", beforeLaunch: false,
     note: "The form already has a honeypot, a timing check and a rate limit. Decide whether to also switch on Cloudflare Turnstile (TURNSTILE_SECRET_KEY and NEXT_PUBLIC_TURNSTILE_SITE_KEY); the privacy page already mentions it." },
   { id: "G21", topic: "Bangla", beforeLaunch: false,
     note: "The site is structured for Bangla (copy.bn on parts, messages.bn.ts for the interface) but has no translation yet. A Bengali font is added for bn routes only when translation starts." },
+  { id: "G22", topic: "Where enquiries go", beforeLaunch: true,
+    note: "Set LEAD_WEBHOOK_URL (leads) and NEXT_PUBLIC_CONTACT_EMAIL (mailto fallback). With neither set in production the form shows an unavailable message and logs a server warning." },
 ];

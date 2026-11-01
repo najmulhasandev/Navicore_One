@@ -27,7 +27,7 @@ interface Props {
 export function ScreenMock({ kind, labels, title, compact = false }: Props) {
   const L = (i: number) => (labels.length ? (labels[i % labels.length] ?? "") : "");
   return (
-    <div aria-hidden="true" className="@container flex h-full w-full overflow-hidden bg-white text-ink">
+    <div aria-hidden="true" className="@container flex h-full w-full overflow-hidden bg-linear-to-br from-white to-blush text-ink">
       {compact ? null : (
         <div className="flex w-[15%] flex-col gap-[2.2cqw] bg-blush p-[2cqw]">
           <i className="block h-[3.4cqw] w-[3.4cqw] rounded-[0.8cqw] bg-maroon" />
@@ -37,6 +37,16 @@ export function ScreenMock({ kind, labels, title, compact = false }: Props) {
         </div>
       )}
       <div className="flex min-w-0 flex-1 flex-col gap-[1.8cqw] p-[2.4cqw]">
+        <div className="flex items-center gap-[1.6cqw]">
+          <i className="block h-[3.2cqw] w-[38%] rounded-full bg-white ring-1 ring-baby-pink" />
+          {compact ? null : (
+            <span className="ml-auto flex -space-x-[0.9cqw]">
+              {["bg-rose", "bg-baby-pink", "bg-maroon"].map((c) => (
+                <i key={c} className={`block h-[3.2cqw] w-[3.2cqw] rounded-full ring-[0.4cqw] ring-white ${c}`} />
+              ))}
+            </span>
+          )}
+        </div>
         {title ? <p className="truncate text-[2.8cqw] font-semibold text-maroon">{title}</p> : null}
         {kind === "dashboard" && <Dashboard L={L} />}
         {kind === "table" && <Table L={L} />}

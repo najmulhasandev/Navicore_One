@@ -9,10 +9,10 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     background_color: BRAND.theme.background,
-    theme_color: BRAND.theme.themeColor,
+    theme_color: BRAND.theme.color,
     icons: [
-      { src: "/brand/pwa-192.png", sizes: "192x192", type: "image/png" },
-      { src: "/brand/pwa-512.png", sizes: "512x512", type: "image/png" },
+      { src: "/brand/pwa-192.webp", sizes: "192x192", type: "image/webp", purpose: "any" },
+      { src: "/brand/pwa-512.webp", sizes: "512x512", type: "image/webp", purpose: "any" },
     ],
   };
 }

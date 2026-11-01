@@ -36,6 +36,12 @@ export function ContactForm({ t, defaultIntent = "demo" }: { t: T; defaultIntent
   }
 
   const v = state.values ?? {};
+  const fallbackEmail = state.fallback?.email ?? null;
+  const mailto = fallbackEmail
+    ? `mailto:${fallbackEmail}?subject=${encodeURIComponent(`${t.intents[intent]}${v.company ? ` - ${v.company}` : ""}`)}&body=${encodeURIComponent(
+        `${v.message ?? ""}\n\n${v.name ?? ""}${v.role ? `, ${v.role}` : ""}\n${v.email ?? ""}`,
+      )}`
+    : null;
   const err = (n: FieldName) => state.errors?.[n];
   const props = (n: FieldName) => ({
     "aria-invalid": err(n) ? true : undefined,
@@ -53,6 +59,11 @@ export function ContactForm({ t, defaultIntent = "demo" }: { t: T; defaultIntent
       {state.status === "error" && state.message ? (
         <p role="alert" className="rounded-2xl bg-blush p-4 text-base font-semibold text-red ring-1 ring-red">
           {state.message}
+        </p>
+      ) : null}
+      {mailto ? (
+        <p>
+          <a href={mailto} className="btn btn-maroon">{t.emailCta}</a>
         </p>
       ) : null}
 

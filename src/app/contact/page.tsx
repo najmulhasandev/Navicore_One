@@ -28,7 +28,7 @@ export default function ContactPage() {
           <div className="rounded-3xl bg-white p-6 ring-1 ring-baby-pink">
             <p className="text-ink-soft">{c.demoNote}</p>
           </div>
-          {SHOW_TODOS ? <TodoNotes todos={[c.todoDemo]} /> : null}
+          {SHOW_TODOS ? <TodoNotes todos={[c.todoDemo, c.todoEmail]} /> : null}
         </aside>
       </div>
     </div>
