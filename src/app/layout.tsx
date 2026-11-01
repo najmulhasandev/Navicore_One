@@ -2,11 +2,14 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { fontBody, fontDisplay } from "./fonts";
+import { BRAND } from "@/content/brand";
 import { SITE } from "@/content/site";
 import { getMessages } from "@/i18n/messages";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { StickyCta } from "@/components/layout/StickyCta";
+import { MotionController } from "@/components/motion/MotionController";
+import { motionInitScript } from "@/lib/motion-init";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -20,13 +23,17 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#FFF7F9",
+  themeColor: BRAND.theme.color,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const m = getMessages();
   return (
-    <html lang="en" className={`${fontDisplay.variable} ${fontBody.variable}`}>
+    <html lang="en" className={`${fontDisplay.variable} ${fontBody.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Sets data-motion before first paint. See src/lib/motion-init.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
+      </head>
       <body>
         <a
           href="#main"
@@ -38,6 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main id="main">{children}</main>
         <Footer />
         <StickyCta label={m.nav.bookDemo} />
+        <MotionController />
       </body>
     </html>
   );

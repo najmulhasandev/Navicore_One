@@ -7,7 +7,10 @@ import { allParts, functionLabels, getCopy, mustGetPart, partHref, partsInGroup,
 import { organizationLd, pageMetadata, softwareApplicationLd, websiteLd } from "@/lib/seo";
 import { DeviceWall, type WallScreen } from "@/components/DeviceWall";
 import { FlowDiagram } from "@/components/FlowDiagram";
+import { HeroStatus } from "@/components/HeroStatus";
 import { HeroVisual } from "@/components/HeroVisual";
+import { ModuleMarquee } from "@/components/ModuleMarquee";
+import { SponsorSection } from "@/components/SponsorSection";
 import { Icon3D } from "@/components/Icon3D";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -38,32 +41,61 @@ function homeFlow(): Flow {
   return { ...full, steps };
 }
 
+/** Split a heading into two balanced lines at a word boundary, so each line can enter on its own. */
+function splitTitle(t: string): [string, string] {
+  const words = t.split(" ");
+  let best = 1;
+  let bestDiff = Number.POSITIVE_INFINITY;
+  for (let i = 1; i < words.length; i++) {
+    const diff = Math.abs(words.slice(0, i).join(" ").length - words.slice(i).join(" ").length);
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      best = i;
+    }
+  }
+  return [words.slice(0, best).join(" "), words.slice(best).join(" ")];
+}
+
+const stagger = (i: number) => ({ "--i": i }) as React.CSSProperties;
+
 export default function HomePage() {
   const m = getMessages();
   const h = m.home;
+  const [line1, line2] = splitTitle(h.hero.title);
   const wallSlugs = ["project-management", "people-directory", "leave-management", "communication", "document-management", "approval-engine", "company-settings", "finance-accounting"];
 
   return (
     <>
       <JsonLd data={[organizationLd(), websiteLd(), softwareApplicationLd()]} />
 
-      {/* 1. Hero */}
-      <section className="bg-hero overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-8 lg:pb-28 lg:pt-20">
+      {/* 1. Hero: entrance, aurora, floating devices and pointer tilt (see docs/MOTION.md) */}
+      <section data-live="eager" data-tilt-root data-parallax-root className="bg-hero relative overflow-hidden">
+        <div className="aurora" aria-hidden="true"><i data-live="eager" /><i data-live="eager" /><i data-live="eager" /></div>
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-4 pb-24 pt-14 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-8 lg:pb-32 lg:pt-24">
           <div>
-            <h1 className="font-display text-5xl font-semibold sm:text-6xl">
-              <span className="mb-4 block font-sans text-sm font-semibold uppercase tracking-[0.18em] text-red sm:text-base">{h.hero.eyebrow}</span>
-              {h.hero.title}
+            <h1 className="font-display text-5xl font-semibold leading-[1.04] sm:text-6xl xl:text-7xl">
+              <span style={stagger(0)} className="hero-in mb-6 flex items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-maroon sm:text-base">
+                <i aria-hidden="true" className="block h-2 w-2 rounded-full bg-red" />
+                {h.hero.eyebrow}
+              </span>
+              <span style={stagger(1)} className="hero-in block">{line1}{" "}</span>
+              <span style={stagger(2)} className="hero-in accent-text block">{line2}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed sm:text-xl">{h.hero.sub}</p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <p style={stagger(3)} className="hero-in mt-8 max-w-xl text-lg leading-relaxed sm:text-xl">{h.hero.sub}</p>
+            <div style={stagger(4)} className="hero-in mt-10 flex flex-wrap gap-3">
               <Link href="/contact?intent=demo" className="btn btn-red">{m.nav.bookDemo}</Link>
               <Link href="/os" className="btn btn-outline">{h.modules.all}</Link>
             </div>
-            <p className="mt-6 max-w-xl text-sm text-ink-soft">{h.hero.note}</p>
+            <div style={stagger(5)} className="hero-in"><HeroStatus /></div>
+            <p style={stagger(6)} className="hero-in mt-6 max-w-xl text-sm text-ink-soft">{h.hero.note}</p>
           </div>
           <HeroVisual />
         </div>
+      </section>
+
+      {/* 1b. Looping band of the 13 module groups */}
+      <section className="bg-white py-8" aria-label={h.marquee.label}>
+        <ModuleMarquee />
       </section>
 
       {/* 2. Problem */}
@@ -71,8 +103,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading id="problem" eyebrow={h.problem.eyebrow} title={h.problem.title} lead={h.problem.lead} />
           <ul className="mt-12 grid gap-5 md:grid-cols-3">
-            {h.problem.cards.map((c) => (
-              <li key={c.title} className="reveal rounded-3xl bg-blush p-7 ring-1 ring-baby-pink">
+            {h.problem.cards.map((c, i) => (
+              <li key={c.title} data-reveal data-glow style={stagger(i)} className="rounded-3xl bg-blush p-7 ring-1 ring-baby-pink">
                 <h3 className="font-display text-xl font-semibold">{c.title}</h3>
                 <p className="mt-3 text-ink-soft">{c.text}</p>
               </li>
@@ -86,11 +118,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading id="different" eyebrow={h.different.eyebrow} title={h.different.title} lead={h.different.lead} />
           <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {h.different.cards.map((c) => {
+            {h.different.cards.map((c, i) => {
               const p = mustGetPart(c.slug);
               return (
-                <li key={c.title} className="reveal">
-                  <Link href={partHref(p)} className="group flex h-full flex-col rounded-3xl bg-white p-6 shadow-soft ring-1 ring-baby-pink transition hover:-translate-y-0.5 hover:shadow-glow">
+                <li key={c.title} data-reveal style={stagger(i)}>
+                  <Link href={partHref(p)} data-glow className="group flex h-full flex-col rounded-3xl bg-white p-6 shadow-soft ring-1 ring-baby-pink hover:shadow-glow">
                     <h3 className="font-display text-lg font-semibold group-hover:underline">{c.title}</h3>
                     <p className="mt-2 flex-1 text-[0.95rem] text-ink-soft">{c.text}</p>
                     <span className="mt-4 text-sm font-semibold text-red">Part {pad2(p.number)} →</span>
@@ -107,9 +139,9 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading id="modules" eyebrow={h.modules.eyebrow} title={h.modules.title} lead={h.modules.lead} />
           <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {moduleGroups.map((g) => (
-              <li key={g.id} className="reveal">
-                <Link href={`/os#${groupSlugAnchor(g.id)}`} className="group flex h-full items-center gap-5 rounded-3xl bg-blush p-5 ring-1 ring-baby-pink transition hover:bg-baby-pink/50 hover:shadow-glow">
+            {moduleGroups.map((g, i) => (
+              <li key={g.id} data-reveal style={stagger(i)}>
+                <Link href={`/os#${groupSlugAnchor(g.id)}`} data-glow className="group flex h-full items-center gap-5 rounded-3xl bg-blush p-5 ring-1 ring-baby-pink hover:bg-baby-pink/50 hover:shadow-glow">
                   <Icon3D group={g.id} size={88} className="h-[88px] w-[88px] shrink-0" />
                   <span>
                     <span className="block font-display text-lg font-semibold text-maroon group-hover:underline">{g.name}</span>
@@ -129,7 +161,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading id="wall" eyebrow={h.wall.eyebrow} title={h.wall.title} lead={h.wall.lead} align="center" />
         </div>
-        <div className="mt-10">
+        <div data-reveal className="mt-10">
           <DeviceWall screens={wallSlugs.map(wallScreen)} focal={wallScreen("executive-control-center")} />
         </div>
         <p className="mx-auto mt-4 max-w-2xl px-4 text-center text-sm text-ink-soft">{h.wall.caption}</p>
@@ -139,12 +171,15 @@ export default function HomePage() {
       <section className="bg-white py-20 sm:py-28 defer" aria-labelledby="flow">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading id="flow" eyebrow={h.flow.eyebrow} title={h.flow.title} lead={h.flow.lead} />
-          <div className="mt-10"><FlowDiagram flow={homeFlow()} /></div>
+          <div data-reveal className="mt-10"><FlowDiagram flow={homeFlow()} /></div>
           <p className="mt-6">
             <Link href="/os/core-employee-flow" className="font-semibold text-red underline underline-offset-4 hover:text-maroon">{h.flow.link} →</Link>
           </p>
         </div>
       </section>
+
+      {/* 6b. Back NAVICORE ONE: facts only, computed from the data */}
+      <SponsorSection />
 
       {/* 7. Partner programme */}
       <section className="bg-section-soft py-20 sm:py-24 defer" aria-labelledby="partner">

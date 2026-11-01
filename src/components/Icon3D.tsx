@@ -26,7 +26,7 @@ export function Icon3D({ group, size = 96, priority = false, className }: Icon3D
       sizes={`${size}px`}
       priority={priority}
       loading={priority ? "eager" : "lazy"}
-      className={className}
+      className={`icon-float ${className ?? ""}`}
       draggable={false}
     />
   );

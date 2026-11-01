@@ -15,11 +15,18 @@ export const BRAND = {
   /** Parent company tagline (NAVICORE), used for the Organization entity only. */
   orgTagline: "Innovating Journeys. Building Futures.",
   logo: {
+    /** Official SVG masters with the wordmark outlined (renders identically without the Inter font). */
     /** For light backgrounds (header). */
-    onLight: { src: "/brand/logo-light.webp", width: 1245, height: 413 },
+    onLight: { src: "/brand/logo-light.svg", width: 1314, height: 481 },
     /** For dark / maroon backgrounds (footer). */
-    onDark: { src: "/brand/logo-white.webp", width: 1245, height: 413 },
+    onDark: { src: "/brand/logo-white.svg", width: 1314, height: 481 },
   },
-  ogImage: "/brand/navicore-one-og-1200x630.png",
-  theme: { background: "#250006", themeColor: "#5B0012" },
+  /** WebP only (no large PNG/JPG in the repo). 1200x630. */
+  ogImage: "/brand/navicore-one-og-1200x630.webp",
+  /**
+   * One value each, used by BOTH the <meta name="theme-color"> viewport entry and the web manifest:
+   *  - color: browser / status-bar tint = brand maroon (--maroon in globals.css)
+   *  - background: page and splash background = blush (--blush in globals.css)
+   */
+  theme: { color: "#6B1220", background: "#FFF7F9" },
 } as const;

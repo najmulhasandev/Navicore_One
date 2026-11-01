@@ -1,0 +1,264 @@
+/*
+ * NAVICORE ONE motion system. Full inventory: docs/MOTION.md.
+ *
+ * Policy: <html data-motion="full | reduced">, set before first paint by the inline script in layout.tsx
+ * (OS preference by default, overridable with the footer toggle).
+ *  - full:    translate / scale / parallax / float / 3D / loops allowed.
+ *  - reduced: no translate, scale, parallax, float, 3D or long loops. KEPT: 150-200 ms opacity fades,
+ *             colour transitions and focus styles.
+ * Everything animated here is transform or opacity only. Nothing animates layout.
+ * Never use a blanket "animation: none !important". Each motion is opted in under html[data-motion="full"].
+ * Without JavaScript (no data-motion attribute) the page is fully visible and still.
+ */
+
+:root {
+  --m-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  /* Amplitude multiplier. Halved on phones. */
+  --m-amp: 1;
+}
+@media (max-width: 767px) {
+  :root { --m-amp: 0.5; }
+}
+
+html[data-motion="full"] { scroll-behavior: smooth; }
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes m-rise {
+  from { opacity: 0; transform: translate3d(0, calc(24px * var(--m-amp)), 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes m-device-in {
+  from { opacity: 0; transform: translate3d(0, calc(40px * var(--m-amp)), 0) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes m-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes m-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg)); }
+  50%      { transform: translate3d(0, calc(var(--amp, 14) * var(--m-amp) * -1px), 0) rotate(var(--rot, 0deg)); }
+}
+@keyframes m-aurora-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(8%, 10%, 0) scale(1.18); }
+}
+@keyframes m-aurora-b {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to   { transform: translate3d(-10%, 8%, 0) scale(0.92); }
+}
+@keyframes m-aurora-c {
+  from { transform: translate3d(-6%, 0, 0) scale(0.95); }
+  to   { transform: translate3d(8%, -9%, 0) scale(1.15); }
+}
+@keyframes m-parallax {
+  to { transform: translate3d(0, calc(var(--depth, 0.3) * -90px * var(--m-amp)), 0); }
+}
+@keyframes m-marquee { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes m-wall-drift {
+  from { translate: 0 0; }
+  to   { translate: calc(-16px * var(--m-amp)) calc(-26px * var(--m-amp)); }
+}
+@keyframes m-icon-bob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -7px, 0) rotate(-3deg); }
+}
+@keyframes m-bar { from { transform: scaleX(0); } to { transform: scaleX(var(--v, 1)); } }
+/* Safety net: if scripting never reveals an element, it still appears after 4 s. */
+@keyframes m-failsafe { to { opacity: 1; transform: none; } }
+
+/* ── Off-screen pause ──────────────────────────────────────── */
+/* Eager: runs from first paint (hero); JS adds .is-off when it leaves the viewport. */
+[data-live="eager"].is-off,
+[data-live="eager"].is-off * { animation-play-state: paused !important; }
+/* Lazy: paused until JS says it is in the viewport (.is-on). */
+[data-live="lazy"]:not(.is-on),
+[data-live="lazy"]:not(.is-on) * { animation-play-state: paused !important; }
+
+/* ── Hero entrance (pure CSS, never waits for JS) ──────────── */
+.hero-in { opacity: 1; }
+html[data-motion="full"] .hero-in {
+  animation: m-rise 0.62s var(--m-ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+html[data-motion="reduced"] .hero-in { animation: m-fade 0.18s ease both; }
+
+/* ── Hero aurora: three gradient layers (no blur filter: cheap on phones) ── */
+.aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.aurora > i { position: absolute; display: block; border-radius: 9999px; }
+.aurora > i:nth-child(1) {
+  width: 52rem; height: 52rem; left: -22rem; top: -24rem;
+  background: radial-gradient(closest-side, rgb(250 218 223 / 0.95), transparent);
+}
+.aurora > i:nth-child(2) {
+  width: 50rem; height: 50rem; right: -16rem; top: -20rem;
+  background: radial-gradient(closest-side, rgb(244 169 186 / 0.34), transparent);
+}
+.aurora > i:nth-child(3) {
+  width: 44rem; height: 44rem; right: 12%; bottom: -26rem;
+  background: radial-gradient(closest-side, rgb(200 16 46 / 0.07), transparent);
+}
+@media (max-width: 767px) {
+  .aurora > i { width: 30rem; height: 30rem; }
+}
+html[data-motion="full"] .aurora > i:nth-child(1) { animation: m-aurora-a 22s ease-in-out infinite alternate; }
+html[data-motion="full"] .aurora > i:nth-child(2) { animation: m-aurora-b 28s ease-in-out infinite alternate; }
+html[data-motion="full"] .aurora > i:nth-child(3) { animation: m-aurora-c 18s ease-in-out infinite alternate; }
+
+/* ── Floating cards: parallax > enter > tilt > float (one transform each) ── */
+.fc-float { transform: rotate(var(--rot, 0deg)); }
+html[data-motion="full"] .fc-float { animation: m-float var(--dur, 8s) ease-in-out var(--delay, 0s) infinite; }
+html[data-motion="full"] [data-live="eager"]:not(.is-off) .fc-float { will-change: transform; }
+
+html[data-motion="full"] .fc-enter {
+  animation: m-device-in 0.62s var(--m-ease) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 0.18s);
+}
+html[data-motion="reduced"] .fc-enter { animation: m-fade 0.2s ease both; }
+
+/* Pointer tilt: max 6 degrees. --px / --py (-1..1) are set by the motion controller on the tilt root. */
+html[data-motion="full"] .fc-tilt {
+  transform:
+    perspective(1100px)
+    translate3d(calc(var(--px, 0) * var(--shift, 12) * 1px), calc(var(--py, 0) * var(--shift, 12) * 1px), 0)
+    rotateX(calc(var(--py, 0) * -6deg * var(--tf, 1)))
+    rotateY(calc(var(--px, 0) * 6deg * var(--tf, 1)));
+}
+
+/* Scroll parallax: CSS scroll-driven animation where supported, JS-set --py elsewhere. */
+@supports (animation-timeline: scroll()) {
+  html[data-motion="full"] .fc-parallax {
+    animation: m-parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 90vh;
+  }
+}
+@supports not (animation-timeline: scroll()) {
+  html[data-motion="full"] .fc-parallax {
+    transform: translate3d(0, calc(var(--sy, 0) * var(--depth, 0.3) * -90px * var(--m-amp)), 0);
+  }
+}
+
+/* ── Scroll reveal (once). Hidden only when the inline script has run (data-js). ── */
+html[data-js] [data-reveal]:not(.is-in) {
+  opacity: 0;
+  animation: m-failsafe 0.01s linear 4s forwards;
+}
+html[data-motion="full"][data-js] [data-reveal] {
+  transition:
+    opacity 0.7s var(--m-ease) calc(min(var(--i, 0), 8) * 70ms),
+    transform 0.7s var(--m-ease) calc(min(var(--i, 0), 8) * 70ms);
+}
+html[data-motion="full"][data-js] [data-reveal]:not(.is-in) { transform: translate3d(0, calc(28px * var(--m-amp)), 0); }
+html[data-motion="reduced"][data-js] [data-reveal] { transition: opacity 0.18s ease; }
+[data-reveal].is-in { opacity: 1; animation: none; }
+
+/* ── Buttons: light sweep + 3 px lift (full), colour only (reduced) ── */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn::after {
+  content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
+  background: linear-gradient(105deg, transparent 36%, rgb(255 255 255 / 0.5) 50%, transparent 64%);
+  transform: translate3d(-130%, 0, 0);
+}
+html[data-motion="full"] .btn:hover { transform: translate3d(0, -3px, 0); }
+html[data-motion="full"] .btn:hover::after { transform: translate3d(130%, 0, 0); transition: transform 0.85s var(--m-ease); }
+html[data-motion="reduced"] .btn:hover { transform: none; }
+.btn-red:hover { background: #a60d25; }
+.btn-maroon:hover { background: #4f0f19; }
+.btn-light:hover { background: var(--color-baby-pink); }
+
+/* ── Cards: lift + soft cursor-following glow ──────────────── */
+[data-glow] { position: relative; isolation: isolate; }
+[data-glow]::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgb(244 169 186 / 0.45), transparent 62%);
+  transition: opacity 0.3s ease;
+}
+[data-glow]:hover::before, [data-glow]:focus-visible::before { opacity: 1; }
+html[data-motion="full"] [data-glow] { transition: transform 0.35s var(--m-ease), box-shadow 0.3s ease, background-color 0.25s ease; }
+html[data-motion="full"] [data-glow]:hover { transform: translate3d(0, -4px, 0); }
+html[data-motion="reduced"] [data-glow] { transition: box-shadow 0.2s ease, background-color 0.2s ease; }
+
+/* ── 3D icons float on hover (only while hovered, so never off-screen) ── */
+html[data-motion="full"] [data-glow]:hover .icon-float,
+html[data-motion="full"] .marquee-pill:hover .icon-float { animation: m-icon-bob 1.7s ease-in-out infinite; }
+
+/* ── Nav link underline slide ──────────────────────────────── */
+.nav-link {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 2px;
+  background-origin: content-box;
+  transition: color 0.2s ease;
+}
+html[data-motion="full"] .nav-link { transition: background-size 0.35s var(--m-ease), color 0.2s ease; }
+.nav-link:hover, .nav-link:focus-visible { background-size: 100% 2px; }
+
+/* ── Sticky glass header that condenses on scroll (transform only) ── */
+.hdr { pointer-events: none; }
+.hdr > * { pointer-events: auto; }
+.hdr-bg {
+  position: absolute; inset: 0; pointer-events: none; transform-origin: top;
+  background: rgb(255 247 249 / 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border-bottom: 1px solid rgb(250 218 223 / 0.9);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+html[data-scrolled] .hdr-bg { background: rgb(255 247 249 / 0.92); box-shadow: 0 12px 30px -20px rgb(107 18 32 / 0.5); }
+html[data-motion="full"] .hdr-bg { transition: transform 0.35s var(--m-ease), background-color 0.3s ease, box-shadow 0.3s ease; }
+html[data-motion="full"] .hdr-inner { transition: transform 0.35s var(--m-ease); }
+html[data-motion="full"] .hdr-logo { transition: transform 0.35s var(--m-ease); transform-origin: left center; }
+html[data-motion="full"][data-scrolled] .hdr-bg { transform: scaleY(0.8); }
+html[data-motion="full"][data-scrolled] .hdr-inner { transform: translate3d(0, -7px, 0); }
+html[data-motion="full"][data-scrolled] .hdr-logo { transform: scale(0.88); }
+
+/* ── Device wall: raised tilt, slow drift, pointer parallax ── */
+.wall {
+  perspective: 1600px;
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 100%);
+}
+.wall-plane {
+  transform-style: preserve-3d;
+  transform:
+    rotateX(calc(58deg + var(--py, 0) * -4deg))
+    rotateZ(calc(-28deg + var(--px, 0) * 4deg))
+    scale(var(--wall-scale, 1));
+}
+html[data-motion="full"] .wall-plane { animation: m-wall-drift 26s ease-in-out infinite alternate; }
+.wall-plane > .wall-tile:nth-child(odd) { transform: translateZ(28px); }
+.wall-plane > .wall-tile:nth-child(3n) { transform: translateZ(54px); }
+html[data-motion="reduced"] .wall-plane > .wall-tile { transform: none !important; }
+
+/* ── Marquee of module groups ──────────────────────────────── */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee-track { display: flex; }
+.marquee-set { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem; }
+.marquee-clone { display: none; }
+html[data-motion="full"] .marquee-track { width: max-content; animation: m-marquee 75s linear infinite; }
+html[data-motion="full"] .marquee-set { flex-wrap: nowrap; flex-shrink: 0; padding-inline-end: 0.9rem; }
+html[data-motion="full"] .marquee-clone { display: flex; }
+html[data-motion="full"] .marquee:hover .marquee-track,
+html[data-motion="full"] .marquee:focus-within .marquee-track { animation-play-state: paused; }
+
+/* ── Build status strip ────────────────────────────────────── */
+.status-bar { transform: scaleX(var(--v, 1)); transform-origin: left center; }
+html[data-motion="full"][data-js] .status-bar {
+  animation: m-bar 1.2s var(--m-ease) calc(var(--i, 0) * 110ms) both paused;
+}
+html[data-motion="full"][data-js] .is-in .status-bar { animation-play-state: running; }
+
+/* ── Motion toggle label (CSS-switched, so no hydration mismatch) ── */
+.mo-off { display: none; }
+html[data-motion="reduced"] .mo-on { display: none; }
+html[data-motion="reduced"] .mo-off { display: inline; }
+
+/* ── Reduced: calm, finished page. Fades and colour changes remain. ── */
+html[data-motion="reduced"] { scroll-behavior: auto; }
+html[data-motion="reduced"] .fc-float,
+html[data-motion="reduced"] .wall-plane { animation: none; }
+
+@media print {
+  .aurora, .marquee, .fc-parallax, .wall, .sticky-cta { display: none !important; }
+}
