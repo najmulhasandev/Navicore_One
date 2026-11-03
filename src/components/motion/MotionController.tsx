@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 /**
  * The only script behind the motion system (about 3 KB gzipped, plain DOM, no libraries).
- *  - per page:   scroll reveal (once), off-screen pause of infinite animations, count-up
+ *  - per page:   scroll reveal (once), off-screen pause of infinite animations, count-up, "How it works" stage
  *  - global:     header "scrolled" state, pointer tilt / cursor glow (fine pointers only),
  *                scroll parallax fallback for browsers without CSS scroll-driven animations
  * Everything respects <html data-motion>; see docs/MOTION.md.
@@ -61,7 +61,26 @@ export function MotionController() {
       { threshold: 0.35 },
     );
 
+    // "How it works" stage: whichever zone crosses the middle of the viewport decides which step is active.
+    const stepsIO = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target as HTMLElement;
+          el.parentElement?.setAttribute("data-active", el.dataset.zone ?? "0");
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    const onFocusIn = (e: FocusEvent) => {
+      const step = (e.target as Element | null)?.closest<HTMLElement>(".step");
+      const stage = step?.closest<HTMLElement>("[data-steps]");
+      if (step && stage) stage.setAttribute("data-active", step.dataset.i ?? "0");
+    };
+    document.addEventListener("focusin", onFocusIn);
+
     const scan = () => {
+      document.querySelectorAll("[data-zone]").forEach((el) => stepsIO.observe(el));
       document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => revealIO.observe(el));
       document.querySelectorAll("[data-live]").forEach((el) => liveIO.observe(el));
       document.querySelectorAll("[data-countup]").forEach((el) => countIO.observe(el));
@@ -71,6 +90,8 @@ export function MotionController() {
       revealIO.disconnect();
       liveIO.disconnect();
       countIO.disconnect();
+      stepsIO.disconnect();
+      document.removeEventListener("focusin", onFocusIn);
     };
   }, [pathname]);
 
