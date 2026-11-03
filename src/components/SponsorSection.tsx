@@ -3,7 +3,6 @@ import { FOUNDER } from "@/content/team";
 import { getMessages } from "@/i18n/messages";
 import { allParts, getCopy, partHref } from "@/lib/parts";
 import { SectionHeading } from "./ui/SectionHeading";
-import { StatusStrip } from "./StatusStrip";
 
 /**
  * "Back NAVICORE ONE": facts only. What exists and what is later are read from the status label of each part;
@@ -16,17 +15,13 @@ export function SponsorSection() {
   const later = allParts.filter((p) => p.status === "future");
 
   return (
-    <section className="bg-section-soft py-20 sm:py-28 defer" aria-labelledby="sponsor">
+    <section className="defer [--cis-m:1240px] [--cis-d:676px] bg-section-soft py-20 sm:py-28" aria-labelledby="sponsor">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div data-reveal>
           <SectionHeading id="sponsor" eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
         </div>
 
-        <div className="mt-12">
-          <StatusStrip />
-        </div>
-
-        <div className="mt-6 grid gap-5 lg:grid-cols-3">
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
           <article data-reveal data-glow style={{ "--i": 0 } as React.CSSProperties} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
             <h3 className="font-display text-xl font-semibold">{t.existsTitle}</h3>
             <p className="mt-2 text-sm text-ink-soft">{t.existsText}</p>

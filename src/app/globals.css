@@ -23,7 +23,7 @@
   --color-ink-soft: #6a4a50;
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: var(--font-display-face), ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --shadow-soft: 0 1px 2px rgb(107 18 32 / 0.06), 0 12px 32px -12px rgb(107 18 32 / 0.18);
   --shadow-float: 0 2px 4px rgb(107 18 32 / 0.08), 0 28px 60px -20px rgb(107 18 32 / 0.35);
@@ -57,8 +57,10 @@
   h1, h2, h3 {
     font-family: var(--font-display);
     color: var(--color-maroon);
-    line-height: 1.12;
-    letter-spacing: -0.015em;
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    word-spacing: 0.06em;
     text-wrap: balance;
   }
   p { text-wrap: pretty; }
@@ -99,7 +101,12 @@
       var(--color-blush); }
 
   /* Below-the-fold sections are not rendered until they are near the viewport (cheaper first paint). */
-  .defer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+  /* Below-the-fold sections skip rendering until near the viewport. The placeholder height (--cis-m phones,
+     --cis-d from 768px) is the section's CONTENT height (real height minus its vertical padding, which is
+     added on top), so in-page anchors land correctly before a section has rendered once. Re-measure if a
+     section's content changes a lot. */
+  .defer { content-visibility: auto; contain-intrinsic-size: auto var(--cis-m, 900px); }
+  @media (min-width: 768px) { .defer { contain-intrinsic-size: auto var(--cis-d, 900px); } }
 
   /* ── Flow diagram connectors ─────────────────────────────── */
   .flow-step .flow-arrow-r { display: none; }
@@ -167,3 +174,108 @@
 @media (forced-colors: active) {
   .accent-text { background: none; color: CanvasText; -webkit-text-fill-color: currentColor; }
 }
+
+/* ── Dark maroon bands (hero, wall, final call to action) ─────────────────
+ * Palette only: maroon, its darker shades, red and baby pink as soft glows. White on maroon is 12.1:1, baby pink on maroon 9.3:1. */
+@layer components {
+  .bg-dark {
+    background:
+      radial-gradient(70rem 36rem at 50% -14%, rgb(200 16 46 / 0.3), transparent 70%),
+      radial-gradient(46rem 30rem at 100% 100%, rgb(244 169 186 / 0.14), transparent 70%),
+      linear-gradient(180deg, #581019 0%, var(--color-maroon) 40%, #4a0c16 100%);
+  }
+  .on-dark h1, .on-dark h2, .on-dark h3 { color: var(--color-white); }
+  .on-dark .btn-red { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.3), 0 12px 32px -8px rgb(200 16 46 / 0.85); }
+  .on-dark .dev-bezel {
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.22),
+      inset 0 2px 3px rgb(255 255 255 / 0.28),
+      0 2px 4px rgb(0 0 0 / 0.2),
+      0 40px 80px -30px rgb(0 0 0 / 0.65);
+  }
+  .on-dark .dev-reflect::before { background: radial-gradient(ellipse at 50% 0%, rgb(244 169 186 / 0.4), rgb(200 16 46 / 0.2) 45%, transparent 72%); }
+}
+
+/* ── How it works: stacked on phones, a pinned stage with crossfading screens on tall desktops ── */
+@layer components {
+  .steps-list { display: grid; gap: 3.5rem; list-style: none; margin: 0; padding: 0; }
+  .step { display: grid; gap: 1.5rem; }
+  .steps-zone { display: none; }
+}
+@media (min-width: 1024px) and (min-height: 720px) {
+  html[data-js] .steps { position: relative; height: 270vh; }
+  html[data-js] .steps-pin { position: sticky; top: 6.5rem; }
+  html[data-js] .steps-list { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: 3.5rem; row-gap: 0.75rem; align-items: center; }
+  html[data-js] .step { display: contents; }
+  html[data-js] .step-text { grid-column: 1; padding: 1.25rem 1.5rem; border-radius: 1.5rem; border: 1px solid transparent; }
+  html[data-js] .step-text h3 { color: var(--color-ink-soft); }
+  html[data-js] .step-screen { grid-column: 2; grid-row: 1 / span 3; opacity: 0; pointer-events: none; transform: translate3d(0, 18px, 0) scale(0.985); }
+  html[data-js] .steps-zone { display: block; position: absolute; left: 0; width: 1px; height: 33.3334%; top: calc(var(--z) * 33.3334%); pointer-events: none; }
+  html[data-js] .steps[data-active="0"] .step[data-i="0"] .step-text,
+  html[data-js] .steps[data-active="1"] .step[data-i="1"] .step-text,
+  html[data-js] .steps[data-active="2"] .step[data-i="2"] .step-text {
+    background: var(--color-blush); border-color: var(--color-baby-pink); box-shadow: var(--shadow-soft);
+  }
+  html[data-js] .steps[data-active="0"] .step[data-i="0"] .step-text h3,
+  html[data-js] .steps[data-active="1"] .step[data-i="1"] .step-text h3,
+  html[data-js] .steps[data-active="2"] .step[data-i="2"] .step-text h3 { color: var(--color-maroon); }
+  html[data-js] .steps[data-active="0"] .step-screen[data-i="0"],
+  html[data-js] .steps[data-active="1"] .step-screen[data-i="1"],
+  html[data-js] .steps[data-active="2"] .step-screen[data-i="2"] { opacity: 1; pointer-events: auto; transform: none; }
+}
+
+/* ── Shared core diagram ───────────────────────────────────── */
+@layer components {
+  .core { container-type: inline-size; }
+  .core-line { stroke: var(--color-rose); stroke-width: 1.5; fill: none; }
+  .core-hub { position: relative; }
+  .core-dot {
+    position: absolute; left: 50%; top: 50%; z-index: 0; width: 0.7rem; height: 0.7rem; margin: -0.35rem 0 0 -0.35rem;
+    border-radius: 9999px; background: var(--color-red); box-shadow: 0 0 0 4px rgb(200 16 46 / 0.18); opacity: 0; pointer-events: none;
+  }
+}
+
+/* ── Comparison table: a real table on desktop, stacked cards on phones ── */
+@layer components {
+  .compare { border-collapse: collapse; }
+  .compare th, .compare td { padding: 1.25rem 1.5rem; vertical-align: top; border-bottom: 1px solid var(--color-baby-pink); }
+  .compare thead th {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-ink-soft); background: var(--color-blush);
+  }
+  .compare thead th.compare-one { background: var(--color-maroon); color: var(--color-white); }
+  .compare tbody th { width: 15%; font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--color-maroon); }
+  .compare td { color: var(--color-ink-soft); }
+  .compare td.compare-one { background: color-mix(in srgb, var(--color-baby-pink) 35%, var(--color-white)); }
+  .compare tbody tr:last-child > * { border-bottom: 0; }
+  .compare-mark { display: inline-block; width: 1.25rem; font-weight: 700; }
+  .compare td:last-child { width: 8.5rem; }
+}
+@media (max-width: 767px) {
+  .compare, .compare tbody, .compare tr, .compare th, .compare td { display: block; }
+  .compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .compare tr { padding: 1.25rem; border-bottom: 1px solid var(--color-baby-pink); }
+  .compare tbody tr:last-child { border-bottom: 0; }
+  .compare th, .compare td { width: auto; padding: 0.4rem 0; border: 0; }
+  .compare td::before {
+    content: attr(data-label); display: block; margin-bottom: 0.2rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-soft);
+  }
+  .compare td.compare-one { margin: 0.5rem 0; padding: 0.75rem 1rem; border-radius: 1rem; }
+}
+
+/* ── Build timeline ────────────────────────────────────────── */
+@layer components {
+  .tl-list::before {
+    content: ""; position: absolute; left: 1.3rem; top: 1.3rem; bottom: 1.3rem; width: 2px; background: var(--color-rose);
+  }
+}
+@media (min-width: 1024px) {
+  .tl-list::before {
+    left: 1.3rem; right: 0; top: 1.3rem; bottom: auto; width: auto; height: 2px;
+    background: linear-gradient(90deg, var(--color-rose) 82%, transparent);
+  }
+}
+
+/* ── FAQ ───────────────────────────────────────────────────── */
+.faq[open] .faq-icon { transform: rotate(45deg); }

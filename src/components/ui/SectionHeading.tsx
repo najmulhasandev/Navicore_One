@@ -6,16 +6,23 @@ interface SectionHeadingProps {
   lead?: ReactNode;
   as?: "h1" | "h2";
   align?: "left" | "center";
+  /** "dark" = on a maroon band: white title, baby-pink text. */
+  tone?: "light" | "dark";
   id?: string;
 }
 
-export function SectionHeading({ eyebrow, title, lead, as = "h2", align = "left", id }: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, lead, as = "h2", align = "left", tone = "light", id }: SectionHeadingProps) {
   const Tag = as;
+  const dark = tone === "dark";
   return (
     <div data-reveal className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
-      {eyebrow ? <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-red">{eyebrow}</p> : null}
-      <Tag id={id} className="font-display text-4xl font-semibold sm:text-5xl">{title}</Tag>
-      {lead ? <p className="mt-5 text-lg text-ink-soft sm:text-xl">{lead}</p> : null}
+      {eyebrow ? (
+        <p className={`mb-4 text-sm font-semibold uppercase tracking-[0.18em] ${dark ? "text-baby-pink" : "text-red"}`}>{eyebrow}</p>
+      ) : null}
+      <Tag id={id} className={`font-display text-4xl font-extrabold tracking-[-0.04em] sm:text-5xl lg:text-6xl ${dark ? "text-white" : ""}`}>
+        {title}
+      </Tag>
+      {lead ? <p className={`mt-5 text-lg sm:text-xl ${dark ? "text-baby-pink" : "text-ink-soft"}`}>{lead}</p> : null}
     </div>
   );
 }

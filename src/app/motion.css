@@ -52,9 +52,27 @@ html[data-motion="full"] { scroll-behavior: smooth; }
   to { transform: translate3d(0, calc(var(--depth, 0.3) * -90px * var(--m-amp)), 0); }
 }
 @keyframes m-marquee { to { transform: translate3d(-50%, 0, 0); } }
-@keyframes m-wall-drift {
+@keyframes m-col-up {
   from { translate: 0 0; }
-  to   { translate: calc(-16px * var(--m-amp)) calc(-26px * var(--m-amp)); }
+  to   { translate: 0 calc(-7rem * var(--m-amp)); }
+}
+@keyframes m-col-down {
+  from { translate: 0 calc(-7rem * var(--m-amp)); }
+  to   { translate: 0 0; }
+}
+@keyframes m-core-pulse {
+  0%   { opacity: 0; translate: 0 0; }
+  14%  { opacity: 1; }
+  78%  { opacity: 1; }
+  100% { opacity: 0; translate: calc(var(--dx) * 1cqw) calc(var(--dy) * 1cqw); }
+}
+@keyframes m-hub-ping {
+  from { opacity: 0.75; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.4); }
+}
+@keyframes m-reveal-sd {
+  from { opacity: 0; transform: translate3d(0, calc(36px * var(--m-amp)), 0); }
+  to   { opacity: 1; transform: none; }
 }
 @keyframes m-icon-bob {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
@@ -65,12 +83,21 @@ html[data-motion="full"] { scroll-behavior: smooth; }
 @keyframes m-failsafe { to { opacity: 1; transform: none; } }
 
 /* ── Off-screen pause ──────────────────────────────────────── */
-/* Eager: runs from first paint (hero); JS adds .is-off when it leaves the viewport. */
+/* Infinite animations only run while their container is on screen.
+   Eager: runs from first paint (hero); JS adds .is-off when it leaves the viewport.
+   Lazy: paused until JS adds .is-on.
+   The animated elements are listed by class on purpose: a universal "*" selector
+   makes every class toggle re-match every descendant and cost ~50 ms of style
+   work on phones. Add any NEW infinite animation to the lists below;
+   scripts/verify-motion.py fails if one keeps running off-screen. */
 [data-live="eager"].is-off,
-[data-live="eager"].is-off * { animation-play-state: paused !important; }
-/* Lazy: paused until JS says it is in the viewport (.is-on). */
+[data-live="eager"].is-off :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i),
+[data-live="eager"].is-off .core-hub::before,
+[data-live="eager"].is-off.core-hub::before,
 [data-live="lazy"]:not(.is-on),
-[data-live="lazy"]:not(.is-on) * { animation-play-state: paused !important; }
+[data-live="lazy"]:not(.is-on) :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i),
+[data-live="lazy"]:not(.is-on) .core-hub::before,
+[data-live="lazy"]:not(.is-on).core-hub::before { animation-play-state: paused !important; }
 
 /* ── Hero entrance (pure CSS, never waits for JS) ──────────── */
 .hero-in { opacity: 1; }
@@ -85,15 +112,15 @@ html[data-motion="reduced"] .hero-in { animation: m-fade 0.18s ease both; }
 .aurora > i { position: absolute; display: block; border-radius: 9999px; }
 .aurora > i:nth-child(1) {
   width: 52rem; height: 52rem; left: -22rem; top: -24rem;
-  background: radial-gradient(closest-side, rgb(250 218 223 / 0.95), transparent);
+  background: radial-gradient(closest-side, rgb(200 16 46 / 0.42), transparent);
 }
 .aurora > i:nth-child(2) {
   width: 50rem; height: 50rem; right: -16rem; top: -20rem;
-  background: radial-gradient(closest-side, rgb(244 169 186 / 0.34), transparent);
+  background: radial-gradient(closest-side, rgb(244 169 186 / 0.22), transparent);
 }
 .aurora > i:nth-child(3) {
   width: 44rem; height: 44rem; right: 12%; bottom: -26rem;
-  background: radial-gradient(closest-side, rgb(200 16 46 / 0.07), transparent);
+  background: radial-gradient(closest-side, rgb(250 218 223 / 0.12), transparent);
 }
 @media (max-width: 767px) {
   .aurora > i { width: 30rem; height: 30rem; }
@@ -222,10 +249,11 @@ html[data-motion="full"][data-scrolled] .hdr-logo { transform: scale(0.88); }
     rotateZ(calc(-28deg + var(--px, 0) * 4deg))
     scale(var(--wall-scale, 1));
 }
-html[data-motion="full"] .wall-plane { animation: m-wall-drift 26s ease-in-out infinite alternate; }
-.wall-plane > .wall-tile:nth-child(odd) { transform: translateZ(28px); }
-.wall-plane > .wall-tile:nth-child(3n) { transform: translateZ(54px); }
-html[data-motion="reduced"] .wall-plane > .wall-tile { transform: none !important; }
+.wall-col { transform-style: preserve-3d; }
+html[data-motion="full"] .wall-col-up { animation: m-col-up 24s ease-in-out infinite alternate; }
+html[data-motion="full"] .wall-col-down { animation: m-col-down 24s ease-in-out infinite alternate; }
+.wall-col > .wall-tile:nth-child(2) { transform: translateZ(46px); }
+html[data-motion="reduced"] .wall-col > .wall-tile { transform: none !important; }
 
 /* ── Marquee of module groups ──────────────────────────────── */
 .marquee {
@@ -249,10 +277,49 @@ html[data-motion="full"][data-js] .status-bar {
 }
 html[data-motion="full"][data-js] .is-in .status-bar { animation-play-state: running; }
 
+/* ── How it works: screens crossfade as the pinned stage scrolls (states live in globals.css) ── */
+html[data-motion="full"] .step-screen { transition: opacity 0.55s ease, transform 0.6s var(--m-ease); }
+html[data-motion="full"] .step-text { transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+html[data-motion="reduced"] .step-screen { transition: opacity 0.2s ease; }
+
+/* ── Shared core diagram: a pulse travels along every line, the hub rings out ── */
+html[data-motion="full"] .core-dot { animation: m-core-pulse 3.6s ease-in-out calc(var(--n) * -0.36s) infinite; }
+.core-hub::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  box-shadow: 0 0 0 2px rgb(107 18 32 / 0.4);
+}
+html[data-motion="full"] .core-hub::before { animation: m-hub-ping 3.2s ease-out infinite; }
+
+/* ── Build timeline: the line draws itself, then the nodes read in order ── */
+html[data-motion="full"][data-js] .tl-list::before { transform: scaleY(0); transform-origin: top; transition: transform 1.3s var(--m-ease) 0.15s; }
+html[data-motion="full"][data-js] .is-in .tl-list::before { transform: none; }
+@media (min-width: 1024px) {
+  html[data-motion="full"][data-js] .tl-list::before { transform: scaleX(0); transform-origin: left; }
+  html[data-motion="full"][data-js] .is-in .tl-list::before { transform: none; }
+}
+
+/* ── FAQ ── */
+html[data-motion="full"] .faq-icon { transition: transform 0.3s var(--m-ease), background-color 0.2s ease; }
+
+/* ── Scroll reveal, CSS-driven where the browser supports view timelines (Chromium, Safari 26+).
+ * Elsewhere the IntersectionObserver path above does the job. The animation only fills backwards, so
+ * hover transforms (card lift) still work once an element has been revealed. ── */
+@supports (animation-timeline: view()) {
+  html[data-motion="full"][data-js] [data-reveal],
+  html[data-motion="full"][data-js] [data-reveal]:not(.is-in) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: m-reveal-sd linear backwards;
+    animation-timeline: view();
+    animation-range: entry calc(2% + var(--i, 0) * 3%) entry calc(38% + var(--i, 0) * 3%);
+  }
+}
+
 /* ── Reduced: calm, finished page. Fades and colour changes remain. ── */
 html[data-motion="reduced"] { scroll-behavior: auto; }
 html[data-motion="reduced"] .fc-float,
-html[data-motion="reduced"] .wall-plane { animation: none; }
+html[data-motion="reduced"] .wall-col { animation: none; }
 
 @media print {
   .aurora, .marquee, .fc-parallax, .wall, .sticky-cta { display: none !important; }
