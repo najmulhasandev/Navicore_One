@@ -9,6 +9,8 @@ interface DeviceFrameProps {
   /** Title shown in a window frame's title bar. */
   title?: string;
   className?: string;
+  /** Window frame only: on phones, drop the title and shrink the bar so the "Illustrative screen" label fits a small tile. */
+  compact?: boolean;
 }
 
 /**
@@ -17,8 +19,9 @@ interface DeviceFrameProps {
  * Laptop and window frames carry an "Illustrative screen" label. The same frames show the responsive web app;
  * they do not imply a native app, and nothing on them is a real screenshot.
  */
-export function DeviceFrame({ variant, children, title, className = "" }: DeviceFrameProps) {
+export function DeviceFrame({ variant, children, title, className = "", compact = false }: DeviceFrameProps) {
   const label = getMessages().device.illustrative;
+  const dot = compact ? "h-2 w-2 sm:h-2.5 sm:w-2.5" : "h-2.5 w-2.5";
 
   if (variant === "laptop") {
     return (
@@ -59,11 +62,11 @@ export function DeviceFrame({ variant, children, title, className = "" }: Device
   }
   return (
     <div className={`wall-tile overflow-hidden rounded-2xl bg-white shadow-float ring-1 ring-baby-pink ${className}`}>
-      <div className="flex items-center gap-2 border-b border-baby-pink bg-blush px-4 py-2.5">
-        <i className="block h-2.5 w-2.5 rounded-full bg-rose" />
-        <i className="block h-2.5 w-2.5 rounded-full bg-baby-pink" />
-        <i className="block h-2.5 w-2.5 rounded-full bg-baby-pink" />
-        {title ? <span className="ml-3 truncate text-xs font-medium text-ink-soft">{title}</span> : null}
+      <div className={`flex items-center border-b border-baby-pink bg-blush ${compact ? "gap-1.5 px-2.5 py-2 sm:gap-2 sm:px-4 sm:py-2.5" : "gap-2 px-4 py-2.5"}`}>
+        <i className={`block rounded-full bg-rose ${dot}`} />
+        <i className={`block rounded-full bg-baby-pink ${dot}`} />
+        <i className={`block rounded-full bg-baby-pink ${dot}`} />
+        {title ? <span className={`ml-3 truncate text-xs font-medium text-ink-soft ${compact ? "max-sm:hidden" : ""}`}>{title}</span> : null}
         <span className="ml-auto shrink-0 rounded-full bg-white px-2 py-0.5 text-[0.62rem] font-semibold text-maroon ring-1 ring-baby-pink">{label}</span>
       </div>
       <div className="dev-screen relative aspect-[16/10]">

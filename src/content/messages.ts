@@ -10,6 +10,10 @@ import { BRAND } from "./brand";
 
 export const TODO_PREFIX = "[TODO: confirm with founder]";
 
+/** Used by both the problem cards and the comparison table, so the two can never drift apart. */
+const SEPARATE_PERMISSIONS = "Each tool has its own users and permissions, so access has to be set up, and kept right, in many places.";
+const SEPARATE_APPROVALS = "A leave approval in one tool, an expense approval in another, and no single record of who decided what.";
+
 export const en = {
   skip: "Skip to content",
   nav: {
@@ -41,11 +45,68 @@ export const en = {
       sub: `${BRAND.shortDescription} From NAVICORE, a technology company in Bangladesh.`,
       note: `${BRAND.tagline} Available today: ${BRAND.coreAreas.join(", ")}. Every other area on this site is labelled In build, Planned or Later horizon.`,
       caption: "Illustrative layouts of the responsive web app. Not live screenshots.",
-      statusLabel: "Build status, computed from the status label on every part:",
-      statusLink: "See the full status",
+      secondary: "See what\u2019s built",
+      chipsLabel: "Build status, computed from the status label on every part",
+      chips: { live: "{n} areas live", building: "{n} in build", parts: "{n} parts", groups: "{n} groups" },
     },
     marquee: {
-      label: "Module groups",
+      label: "Module groups and product facts",
+      facts: { parts: "{n} parts", groups: "{n} module groups", live: "{n} areas live", building: "{n} in build" },
+    },
+    steps: {
+      eyebrow: "How it works",
+      title: "Three live areas, one workspace",
+      lead: "Three of the areas whose screens have shipped, each shown as an illustrative layout. Everything else on this site is labelled In build, Planned or Later horizon.",
+      stepLabel: "Step",
+      functions: "Key functions",
+      link: "See the part",
+    },
+    core: {
+      eyebrow: "The shared core",
+      title: "One workspace under every module",
+      centerTitle: "Your company workspace",
+      centerSub: "Shared core",
+      caption: "Names and statuses are read from the product data. Every module connects to the same workspace.",
+    },
+    bento: {
+      numbers: { parts: "parts", groups: "module groups", live: "areas live" },
+      partLabel: "Part {n}",
+    },
+    compare: {
+      eyebrow: "Compare",
+      title: "Separate tools vs NAVICORE ONE",
+      lead: "The same four questions, asked of a patchwork of separate tools and of one platform. The status badge on each row says how far that part of NAVICORE ONE has come.",
+      cols: { topic: "Topic", separate: "Separate tools", one: "NAVICORE ONE", status: "Status" },
+      rows: [
+        { topic: "Permissions", separate: SEPARATE_PERMISSIONS, slug: "rbac-permissions" },
+        { topic: "Approvals", separate: SEPARATE_APPROVALS, slug: "approval-engine" },
+        { topic: "Audit trail", separate: "History is spread across the tools, so there is no single record of who did what.", slug: "audit-system" },
+        { topic: "Workspace isolation", separate: "How well customers are kept apart depends on how each separate tool is set up.", slug: "multi-tenancy" },
+      ],
+      note: "The NAVICORE ONE column repeats the product specification. Badges show the status label of the part, nothing more.",
+    },
+    faq: {
+      eyebrow: "FAQ",
+      title: "Questions, answered from the product data",
+      statusPending: "Not published yet.",
+      items: [
+        { id: "what", q: "What is NAVICORE ONE?", a: BRAND.positioning },
+        { id: "live", q: "Which areas are live today?", a: "{live} areas have shipped screens, according to the product specification: {liveNames}." },
+        { id: "building", q: "What is still being built?", a: "{building} parts are in build, {planned} are planned and {future} are left for a later horizon. Only parts labelled Live have shipped." },
+        { id: "isolation", q: "Is each company\u2019s data kept separate?", a: "Each company gets its own workspace, and isolation is a hard rule: a customer must never be able to access another customer\u2019s data. This area, {isolationName}, is labelled {isolationStatus}." },
+        {
+          id: "pricing",
+          q: "How much does it cost?",
+          a: "NAVICORE ONE pricing is not published on this site. Tell us about your company and what you need.",
+          todo: `${TODO_PREFIX} Pricing and licence terms: what should the home page FAQ say?`,
+        },
+        {
+          id: "demo",
+          q: "How do I see a demo?",
+          a: "No demo link is live on this site yet. Send your details and say what you would like to see.",
+          todo: `${TODO_PREFIX} Is the public demo built? If yes, link it in the FAQ and on /contact.`,
+        },
+      ],
     },
     status: {
       eyebrow: "Build status",
@@ -69,25 +130,6 @@ export const en = {
       ctaSecondary: "See every part",
       ctaNote: "Tell us who you are and how you would like to back the work.",
     },
-    problem: {
-      eyebrow: "The problem",
-      title: "A company run on a patchwork of tools",
-      lead: "Many companies run on separate tools that were never designed to work together. NAVICORE ONE is positioned as one platform instead of a stitched-together toolchain.",
-      cards: [
-        {
-          title: "Separate sign-ins, separate rules",
-          text: "Each tool has its own users and permissions, so access has to be set up, and kept right, in many places.",
-        },
-        {
-          title: "Approvals and history in different places",
-          text: "A leave approval in one tool, an expense approval in another, and no single record of who decided what.",
-        },
-        {
-          title: "Nobody sees the whole company",
-          text: "To know how the company is doing, you ask several people and open several tools.",
-        },
-      ],
-    },
     different: {
       eyebrow: "What makes it different",
       title: "Shared foundations under every module",
@@ -103,33 +145,14 @@ export const en = {
         { title: "See the whole company from anywhere", text: "An executive overview and a daily 'what happened' feed make remote management possible.", slug: "executive-control-center" },
       ],
     },
-    modules: {
-      eyebrow: "The product",
-      title: "Thirteen groups, 52 parts",
-      lead: "Every part has its own page: what it is, who uses it, how it works step by step, and how it connects to the rest.",
-      partsLabel: "parts",
-      all: "See all 52 parts",
-    },
     wall: {
       eyebrow: "Every screen",
       title: "Every screen, one system",
-      lead: "A tilted look at the kinds of screens NAVICORE ONE is designed around: dashboards, tables, boards, calendars, chat, documents, approvals and settings.",
+      lead: "A tilted look at the kinds of screens NAVICORE ONE is designed around: dashboards, tables, boards, calendars, chat, documents, approvals and settings. One screen is shown straight on.",
       caption: "Illustrative layouts built from the guide's module lists. Not live screenshots.",
     },
-    flow: {
-      eyebrow: "How it works",
-      title: "How it works, end to end",
-      lead: "One of the product's core flows: a candidate becomes an active employee. It is designed so that a single HR approval sets most of it in motion.",
-      link: "See the whole flow, including what happens when someone leaves",
-    },
-    partner: {
-      eyebrow: "Partners",
-      title: "Work with NAVICORE\u00a0ONE as a partner",
-      text: "Partner details are not published yet. Tell us about your business and how you would like to work together.",
-      cta: "See the partner page",
-    },
     final: {
-      title: "See NAVICORE ONE for yourself",
+      title: "See NAVICORE\u00a0ONE for yourself",
       text: "Ask for a demo, or tell us how you would like to partner.",
     },
   },
