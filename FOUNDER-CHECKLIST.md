@@ -217,6 +217,8 @@ Labels come from the guide as dated 2026-08-24. Live = screens shipped; In build
 
 ## 7. Page copy that waits for your answer
 
+- [ ] `messages.home.faq.items[4].todo`: Pricing and licence terms: what should the home page FAQ say?
+- [ ] `messages.home.faq.items[5].todo`: Is the public demo built? If yes, link it in the FAQ and on /contact.
 - [ ] `messages.partners.who.todo`: Who is the partner programme for (resellers, implementers, referrers, technology partners, others)? The guide does not say.
 - [ ] `messages.partners.gets.todo`: What do partners receive (pricing terms, white-label rights, training, support, leads)? The guide does not say, so nothing is promised here.
 - [ ] `messages.partners.apply.todo`: What are the next steps after the form (call, application, agreement)?
@@ -229,4 +231,4 @@ Labels come from the guide as dated 2026-08-24. Live = screens shipped; In build
 
 ## 8. Markers left in code
 
-- [ ] `src/content/site.ts:23`: Re-confirm every status label before launch.
+- [ ] `src/content/site.ts:24`: Re-confirm every status label before launch.
