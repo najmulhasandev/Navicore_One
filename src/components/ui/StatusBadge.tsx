@@ -2,7 +2,7 @@ import type { PartStatus } from "@/content/types";
 import { getMessages } from "@/i18n/messages";
 import { StatusDot } from "./StatusDot";
 
-const look: Record<PartStatus, string> = {
+export const statusLook: Record<PartStatus, string> = {
   live: "bg-maroon text-white",
   building: "bg-baby-pink text-maroon ring-1 ring-inset ring-rose",
   planned: "bg-white text-maroon ring-1 ring-inset ring-maroon/50",
@@ -17,7 +17,7 @@ export function StatusBadge({ status, className = "" }: { status: PartStatus; cl
   return (
     <span
       title={s.description}
-      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold tracking-wide ${look[status]} ${className}`}
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold tracking-wide ${statusLook[status]} ${className}`}
     >
       <StatusDot status={status} className="!h-2 !w-2" />
       {s.label}

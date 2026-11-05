@@ -64,7 +64,7 @@ export function PartLayout({ part }: { part: OsPart }) {
           </div>
           <div className="relative pb-8">
             <DeviceFrame variant="window" title={c.name}>
-              <ScreenMock kind={part.screen} labels={labels} title={c.name} />
+              <ScreenMock kind={part.screen} labels={labels} title={c.name} status={part.status} group={part.group} />
             </DeviceFrame>
             {labels[0] ? (
               <FloatingCard className="absolute -left-4 top-10 hidden sm:block" depth={0.45} delay={0.4} rot={-3} cardClassName="px-4 py-2.5 text-sm font-semibold text-maroon">

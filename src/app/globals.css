@@ -155,12 +155,6 @@
     background: radial-gradient(ellipse at 50% 0%, rgb(200 16 46 / 0.22), rgb(244 169 186 / 0.25) 45%, transparent 72%);
     filter: blur(6px);
   }
-  .illus-tag {
-    position: absolute; right: 0.6rem; top: 0.55rem; z-index: 7; pointer-events: none;
-    border-radius: 999px; background: rgb(255 255 255 / 0.9); padding: 0.1rem 0.55rem;
-    font-size: 0.62rem; font-weight: 600; letter-spacing: 0.02em; color: var(--color-maroon);
-    box-shadow: 0 0 0 1px rgb(250 218 223);
-  }
 }
 
 /* Accent treatment for the second hero line: maroon to red (red on blush is 5.6:1; the text is display size). */
