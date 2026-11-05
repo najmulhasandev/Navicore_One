@@ -37,19 +37,19 @@ export function HeroVisual() {
         {/* devices */}
         <FloatingCard bare className="absolute left-[19%] top-[4%] z-10 w-[62%]" depth={0.12} tilt={1} shift={14} duration={9} delay={0} amp={12} enter={1}>
           <DeviceFrame variant="laptop">
-            <ScreenMock kind={exec.screen} labels={functionLabels(exec)} title={getCopy(exec).name} />
+            <ScreenMock kind={exec.screen} labels={functionLabels(exec)} title={getCopy(exec).name} status={exec.status} group={exec.group} tag />
           </DeviceFrame>
         </FloatingCard>
 
         <FloatingCard bare className="absolute bottom-[2%] left-[1%] z-20 w-[34%]" depth={0.4} tilt={0.85} shift={20} delay={-2.4} duration={8} amp={18} rot={-4} enter={2}>
           <DeviceFrame variant="tablet">
-            <ScreenMock kind={projects.screen} labels={functionLabels(projects)} title={getCopy(projects).name} />
+            <ScreenMock kind={projects.screen} labels={functionLabels(projects)} title={getCopy(projects).name} status={projects.status} group={projects.group} tag />
           </DeviceFrame>
         </FloatingCard>
 
         <FloatingCard bare className="absolute -bottom-[2%] right-[4%] z-20 w-[17%]" depth={0.65} tilt={0.7} shift={26} delay={-4.6} duration={7} amp={22} rot={5} enter={3}>
           <DeviceFrame variant="phone">
-            <ScreenMock kind={chat.screen} labels={functionLabels(chat)} compact />
+            <ScreenMock kind={chat.screen} labels={functionLabels(chat)} title={getCopy(chat).name} compact />
           </DeviceFrame>
         </FloatingCard>
 

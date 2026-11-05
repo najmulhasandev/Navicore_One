@@ -1,4 +1,4 @@
-import type { ScreenKind } from "@/content/types";
+import type { PartStatus, ScreenKind } from "@/content/types";
 import { DeviceFrame } from "./mock/DeviceFrame";
 import { ScreenMock } from "./mock/ScreenMock";
 
@@ -6,6 +6,8 @@ export interface WallScreen {
   kind: ScreenKind;
   title: string;
   labels: readonly string[];
+  status: PartStatus;
+  group: string;
 }
 
 interface DeviceWallProps {
@@ -33,7 +35,7 @@ export function DeviceWall({ columns, focal }: DeviceWallProps) {
             <div key={ci} data-live="lazy" className={`wall-col ${ci % 2 === 0 ? "wall-col-up" : "wall-col-down"} flex min-w-0 flex-1 flex-col gap-8`}>
               {col.map((s) => (
                 <DeviceFrame key={s.title} variant="window" compact title={s.title}>
-                  <ScreenMock kind={s.kind} labels={s.labels} />
+                  <ScreenMock kind={s.kind} labels={s.labels} title={s.title} status={s.status} group={s.group} />
                 </DeviceFrame>
               ))}
             </div>
@@ -43,7 +45,7 @@ export function DeviceWall({ columns, focal }: DeviceWallProps) {
       <div className="absolute left-1/2 top-1/2 z-10 w-[12.5rem] -translate-x-1/2 -translate-y-1/2 sm:w-[24rem] lg:w-[33rem]">
         <div className="rounded-[1.4rem] bg-white/15 p-2 shadow-glow ring-1 ring-white/30 backdrop-blur-sm">
           <DeviceFrame variant="window" compact title={focal.title}>
-            <ScreenMock kind={focal.kind} labels={focal.labels} />
+            <ScreenMock kind={focal.kind} labels={focal.labels} title={focal.title} status={focal.status} group={focal.group} />
           </DeviceFrame>
         </div>
       </div>

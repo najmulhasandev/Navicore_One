@@ -15,9 +15,22 @@ Source: `src/app/motion.css` (all CSS), `src/components/motion/MotionController.
 ## Performance rules
 - **Off-screen pause.** Every infinite animation lives under `data-live="eager"` (runs from first paint; JS adds `.is-off` when it
   leaves the viewport) or `data-live="lazy"` (paused until JS adds `.is-on`). The pause rules in `motion.css` name the animated
-  classes explicitly (`.fc-float`, `.marquee-track`, `.wall-col`, `.core-dot`, `.core-hub`, `.aurora > i`, plus `.core-hub::before`).
+  classes explicitly (`.fc-float`, `.marquee-track`, `.wall-col`, `.core-dot`, `.core-hub`, `.aurora > i`, `.sx`, plus `.core-hub::before`).
   A universal `*` selector was tried and removed: every class toggle re-matched every descendant. **A new infinite animation must be
   added to that list**; `scripts/verify-motion.py` fails if one keeps running off-screen.
+- **In-screen activity (`.sx`).** Every illustrative app screen (`ScreenMock`, `Phone`) is one `data-live="lazy"` block. Pausing is per
+  screen, not per element, on purpose: the pointer, the Pending/Approved chips and the dragged card are one choreography on one
+  shared loop length, and pausing them separately would desynchronise them. Consequence: a screen that is only partly visible keeps
+  running as a whole. `verify-motion.py` therefore measures off-screen at **block level** (the nearest `[data-live]` ancestor must
+  intersect the viewport) and reports partly visible screens separately (`running_in_partly_visible_blocks`).
+- **Play-once entrances in screens.** `MotionController` adds `.is-seen` (never removed) the first time a `[data-live]` block
+  intersects. Screen entrances (`.sx-in`, `.sx-grow`, `.sx-cover`, `.sx-line`) are gated by `.is-seen`, so they play once, when the
+  screen is first seen, not at load for screens far down the page. Loops start with `.is-on` and pause with `.is-off`.
+- **Finished state at rest.** Nothing in a screen is hidden without an animation that reveals it. Without JavaScript, or in the
+  unused `reduced` mode, every screen is drawn finished and still (the pointer is `display: none` at rest).
+- Screen animation is `transform`, `translate`, `scale`, `rotate` and `opacity` only. Moves are percentages of the element's own
+  box or of the whole screen (the pointer lives in an `inset-0` overlay), so they stay on the compositor; `cqw` is not used inside
+  keyframes. Tailwind's `scale-x-0` / `translate-*` use the same individual properties, so keyframes override them; do not mix in `transform:`.
 - **Below-the-fold sections** (wall, core diagram, bento, comparison, timeline, sponsors, FAQ) use `content-visibility: auto`
   (`.defer`), so their style, layout and paint cost is paid when they approach the viewport, not at load. Each sets
   `--cis-m` / `--cis-d` (phone / 768px+) to its content height so in-page anchors such as `#build-status` land correctly
@@ -53,31 +66,41 @@ Source: `src/app/motion.css` (all CSS), `src/components/motion/MotionController.
 | 18 | 3D icon bob (`m-icon-bob`) | hover on card / marquee pill | 1.7 s loop while hovered | none |
 | 19 | Nav underline slide, header condense, FAQ icon rotate | hover / focus, scrollY > 8, details open | 0.35 s / 0.35 s / 0.3 s | colour and tint only |
 | 20 | Smooth anchors | in-page links | browser | `scroll-behavior: auto` |
+| 21 | Screen entrance: rows, KPI cards and chart pieces rise in; bars grow, sparklines and chart area wipe in, tree connectors draw, form check marks tick (`.sx-in`, `.sx-grow`, `.sx-cover`, `.sx-line`, `.sx-check`) | first time a screen is on screen (`.is-seen`), once | 0.4-1.3 s each, stagger by `--k` (70-120 ms steps, 80-500 ms start offsets) | none (screens drawn finished) |
+| 22 | Pointer: moves across the screen and clicks (`.sx-cursor`, `.sx-click`); on the kanban screen it grabs a card and drags it to the next column (`.sx-cursor-drag`, `.sx-grab`, `.sx-drag`) | endless while the screen is on screen | 9 s loop (10 s for the drag) | pointer hidden |
+| 23 | Approval: a Pending pill flips to Approved when the pointer clicks it (`.sx-swap-out`, `.sx-swap-in`) | same 9 s loop as 22 | 9 s | static Pending pill |
+| 24 | Live signals: bell and avatar ping (`.sx-ping`), search caret (`.sx-caret`), chart end dot | endless while on screen | 2.4 s ping, 1.1 s caret blink | none |
+| 25 | Highlight sweeps over list rows, table rows, calendar days, tree chains, cards (`.sx-hl3/4/6`, `.sx-sweep4/6`) | endless while on screen | 4.5-12 s, staggered by `--k` | none |
+| 26 | Typing indicator and arriving message in chat and phone screens (`.sx-typing`, `.sx-dot`, `.sx-msg`) | endless while on screen | 9 s (dots 1 s) | none |
+| 27 | Settings toggles flip (`.sx-flip`, `.sx-flip-bg`, `.sx-flip-bg-inv`) with a per-row phase offset (`--on`) | endless while on screen | 7 s | none |
+| 28 | Form fields fill, flow nodes fill, search text types (`.sx-fill`, `.sx-type`) | endless while on screen | 5-7.2 s | none |
 
 ## Verification (Playwright, Chromium, 1440x900, served by `next start`)
 Re-run: `npm run build && npm run start`, then `python3 scripts/verify-motion.py http://localhost:3000` (needs Python Playwright;
 the criteria are in the script header).
-- Full motion, 1.7 s after load of `/`: `document.getAnimations().length` = 42 (15 time-based entrances, 12 scroll-linked, 15 infinite:
-  3 hero aurora, 8 floats, 1 marquee, 3 CTA aurora). Requirement: at least 12.
+- Full motion, 1.7 s after load of `/`: `document.getAnimations().length` = 110 (57 infinite, of which only the hero aurora runs at
+  scroll 0 because the devices start below the first 900 px; the rest are paused until their screen scrolls in). Requirement: at least 12.
 - Hero entrance: the last entrance animation ends at 1050 ms (limit 1100 ms), starting at first paint with no JavaScript involved.
-- Infinite animations running while their element is off-screen: 0 at every sampled scroll position (every 700 px down the whole page,
-  and at the bottom), including the pseudo-element hub ring.
-- OS "reduce motion" turned on: `data-motion` is still `full`, 42 animations, 15 infinite, no footer button (always-on policy).
+- Infinite animations running while their whole `data-live` block is off-screen: 0 at every sampled scroll position (every 700 px
+  down the whole page, and at the bottom), including the pseudo-element hub ring.
+- The opposite check: infinite animations paused while their block is entirely inside the viewport: 0 at every sample. Without it a
+  pause rule that never lifts would pass the off-screen check.
+- Partly visible screens keep their loops running (per-screen pausing, see Performance rules): up to 29 loops at one scroll position
+  (`scroll_max_running_in_partly_visible_blocks`). Most loops running at once: 84 (wall section on desktop); all are transform or opacity.
+- OS "reduce motion" turned on: `data-motion` is still `full`, 110 animations, 57 infinite, no footer button (always-on policy).
 
-## Lighthouse (mobile, Lighthouse 12, local `next start`, headless Chromium, 2 CPU cores, benchmarkIndex about 2200)
-Method: `lighthouse <url> --form-factor=mobile --screenEmulation.mobile --throttling-method=simulate|devtools`, 5 simulated runs and
-3 applied-throttling runs of the home page (taken one revision earlier; the last change only altered `content-visibility` placeholder heights), compared with the previous production build served the same way.
+## Lighthouse (mobile, Lighthouse 12, local `next start`, headless Chromium, 2 CPU cores)
+Method: `lighthouse <url> --form-factor=mobile --screenEmulation.mobile --throttling-method=simulate --only-categories=performance`,
+6 runs per build, **interleaved** (A, B, A, B ...) against the previous main (the Sparrow-grade home, without the in-screen
+animation) served the same way on the same machine. The sandbox's own speed drifts between sessions (benchmarkIndex about 2200 to
+2800), so absolute scores from different sessions are not comparable; only an interleaved A/B is.
 
-| | Performance (median) | LCP (median) | TBT (median) | CLS | A11y / Best practices / SEO |
+| | Performance (median, range) | FCP | LCP | TBT | CLS |
 |---|---|---|---|---|---|
-| New home, simulated | 82 (range 82-87) | 3.15 s | 442 ms | 0 | 100 / 100 / 100 |
-| Previous build, simulated | 82 (range 74-85) | 3.1 s | 468 ms | 0 | not measured |
-| New home, applied throttling | 72 | 2.1 s | 1,274 ms | 0 | not measured |
-| Previous build, applied throttling | 73 | 2.0 s | 1,208 ms | 0 | not measured |
+| Previous main (static screens) | 92 (88-98) | 0.93 s | 2.97 s | 182 ms | 0 |
+| Animated app screens | 91.5 (90-94) | 1.08 s | 2.83 s | 243 ms | 0 |
 
-Reading: the rebuild is performance-neutral against the previous build, which is not the same as meeting the brief's Lighthouse
-90 target. It does not. LCP passes 2.5 s with applied throttling and misses it under Lighthouse's simulated model; the element is
-the header logo (the only candidate Chromium reports; observed time 0.25-0.3 s unthrottled). The gap is main-thread work
-shared by both builds (HTML parse and hydration of the React runtime, about 186 KB gzipped of JavaScript, one font-swap layout of
-about 70 ms). Run-to-run spread on this machine is 10+ points, so treat single runs as noise. A further pass would target that shared
-shell, not the home sections.
+Reading: score-neutral within run-to-run noise (the ranges overlap). The measurable cost of the richer screens is about +60 ms TBT
+and +0.15 s FCP (more DOM to parse and style in the hero and wall). An earlier interleaved run on a slower sandbox showed the same
+direction (about 2-4 points, LCP +0.4 s, TBT +15 to +65 ms). The brief's Lighthouse 90 target is met on this machine and not
+guaranteed on slower ones; real-device numbers are not measured. If the cost matters, the lever is DOM size in the hero screens.

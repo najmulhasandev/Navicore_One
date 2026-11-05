@@ -49,7 +49,7 @@ export function HowItWorks() {
                   <div className="step-screen" data-i={i}>
                     <div aria-hidden="true">
                       <DeviceFrame variant="window" title={copy.name}>
-                        <ScreenMock kind={part.screen} labels={labels} />
+                        <ScreenMock kind={part.screen} labels={labels} title={copy.name} status={part.status} group={part.group} />
                       </DeviceFrame>
                     </div>
                     <ul aria-label={t.functions} className="mt-5 flex flex-wrap gap-2">
