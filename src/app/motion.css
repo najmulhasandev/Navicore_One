@@ -91,11 +91,11 @@ html[data-motion="full"] { scroll-behavior: smooth; }
    work on phones. Add any NEW infinite animation to the lists below;
    scripts/verify-motion.py fails if one keeps running off-screen. */
 [data-live="eager"].is-off,
-[data-live="eager"].is-off :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i),
+[data-live="eager"].is-off :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i, .sx),
 [data-live="eager"].is-off .core-hub::before,
 [data-live="eager"].is-off.core-hub::before,
 [data-live="lazy"]:not(.is-on),
-[data-live="lazy"]:not(.is-on) :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i),
+[data-live="lazy"]:not(.is-on) :is(.fc-float, .marquee-track, .wall-col, .core-dot, .core-hub, .aurora > i, .sx),
 [data-live="lazy"]:not(.is-on) .core-hub::before,
 [data-live="lazy"]:not(.is-on).core-hub::before { animation-play-state: paused !important; }
 
@@ -300,6 +300,97 @@ html[data-motion="full"][data-js] .is-in .tl-list::before { transform: none; }
 
 /* ── FAQ ── */
 html[data-motion="full"] .faq-icon { transition: transform 0.3s var(--m-ease), background-color 0.2s ease; }
+
+/* ── In-screen activity: why the illustrative screens look like they are being used ─────────────────
+ * Every screen is one data-live block. Entrances play once, the first time the screen is seen (.is-seen); the loops
+ * run only while it is on screen (the pause rules above list .sx). Transform, translate, scale and opacity only,
+ * and positions are percentages of the element or the screen, so they stay on the compositor and scale with the
+ * screen. The resting styles (no motion, no JS) are the finished screen: nothing is hidden until an animation runs. */
+@keyframes sx-in { from { opacity: 0; translate: 0 35%; } }
+@keyframes sx-grow { from { scale: 0 1; } }
+@keyframes sx-cover { from { scale: 1 1; } }
+@keyframes sx-line { from { scale: 1 0; } }
+@keyframes sx-ping { 0% { opacity: 0.55; scale: 0.6; } 70%, 100% { opacity: 0; scale: 2.6; } }
+@keyframes sx-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes sx-hl3 { 0%, 100% { opacity: 0; } 3%, 24% { opacity: 1; } 30% { opacity: 0; } }
+@keyframes sx-hl4 { 0%, 100% { opacity: 0; } 3%, 18% { opacity: 1; } 23% { opacity: 0; } }
+@keyframes sx-hl6 { 0%, 100% { opacity: 0; } 2%, 11% { opacity: 1; } 15% { opacity: 0; } }
+@keyframes sx-sweep4 {
+  0%, 18% { translate: 0 0; } 25%, 43% { translate: 0 100%; } 50%, 68% { translate: 0 200%; } 75%, 93% { translate: 0 300%; } 100% { translate: 0 0; }
+}
+@keyframes sx-sweep6 {
+  0%, 12% { translate: 0 0; } 16.7%, 28.7% { translate: 0 100%; } 33.4%, 45.4% { translate: 0 200%; }
+  50%, 62% { translate: 0 300%; } 66.7%, 78.7% { translate: 0 400%; } 83.4%, 95% { translate: 0 500%; } 100% { translate: 0 0; }
+}
+@keyframes sx-swap-out { 0%, 24% { opacity: 1; } 28%, 80% { opacity: 0; } 84%, 100% { opacity: 1; } }
+@keyframes sx-swap-in {
+  0%, 24% { opacity: 0; scale: 0.9; } 28%, 80% { opacity: 1; scale: 1; } 84%, 100% { opacity: 0; scale: 0.9; }
+}
+@keyframes sx-cursor {
+  0%, 6% { translate: var(--x0) var(--y0); } 22%, 34% { translate: var(--x1) var(--y1); }
+  50%, 62% { translate: var(--x2) var(--y2); } 82%, 100% { translate: var(--x0) var(--y0); }
+}
+@keyframes sx-cursor-drag {
+  0%, 12% { translate: var(--x0) var(--y0); } 24% { translate: var(--x1) var(--y1); }
+  46%, 70% { translate: var(--x2) var(--y2); } 84%, 100% { translate: var(--x0) var(--y0); }
+}
+@keyframes sx-click { 0%, 24%, 32%, 52%, 60%, 100% { scale: 1; } 27%, 55% { scale: 0.8; } }
+@keyframes sx-grab { 0%, 22%, 52%, 100% { scale: 1; } 25%, 46% { scale: 0.8; } }
+@keyframes sx-drag {
+  0%, 18% { translate: 0 0; scale: 1; rotate: 0deg; opacity: 1; }
+  24% { translate: 0 0; scale: 1.05; rotate: 2deg; opacity: 1; }
+  46% { translate: 117% 112%; scale: 1.05; rotate: 1deg; opacity: 1; }
+  52%, 76% { translate: 117% 112%; scale: 1; rotate: 0deg; opacity: 1; }
+  78% { translate: 117% 112%; scale: 1; rotate: 0deg; opacity: 0; }
+  78.1% { translate: 0 0; scale: 1; rotate: 0deg; opacity: 0; }
+  86%, 100% { translate: 0 0; scale: 1; rotate: 0deg; opacity: 1; }
+}
+@keyframes sx-typing { 0%, 16% { opacity: 0; } 20%, 38% { opacity: 1; } 42%, 100% { opacity: 0; } }
+@keyframes sx-dot { 0%, 60%, 100% { translate: 0 0; opacity: 0.45; } 30% { translate: 0 -70%; opacity: 1; } }
+@keyframes sx-msg {
+  0%, 40% { opacity: 0; translate: 0 40%; } 46%, 92% { opacity: 1; translate: 0 0; } 98%, 100% { opacity: 0; translate: 0 0; }
+}
+@keyframes sx-flip { 0%, 40% { translate: 0 0; } 50%, 90% { translate: 130% 0; } 100% { translate: 0 0; } }
+@keyframes sx-flip-bg { 0%, 40% { opacity: 0; } 50%, 90% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes sx-flip-bg-inv { 0%, 40% { opacity: 1; } 50%, 90% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sx-fill { 0% { scale: 0 1; } 10%, 22% { scale: 1 1; } 26%, 100% { scale: 0 1; } }
+@keyframes sx-type { 0% { scale: 0.04 1; } 55%, 85% { scale: 1 1; } 100% { scale: 0.04 1; } }
+
+/* Resting state of the pointer: hidden unless motion is on. */
+.sx-cursor { display: none; }
+
+html[data-motion="full"] .is-seen .sx-in { animation: sx-in 0.6s var(--m-ease) calc(var(--k, 0) * 70ms + 80ms) backwards; }
+html[data-motion="full"] .is-seen .sx-grow { animation: sx-grow 1s var(--m-ease) calc(var(--k, 0) * 90ms + 500ms) backwards; }
+html[data-motion="full"] .is-seen .sx-cover { animation: sx-cover 1.3s cubic-bezier(0.5, 0, 0.2, 1) calc(var(--k, 0) * 120ms + 300ms) backwards; }
+html[data-motion="full"] .is-seen .sx-line { animation: sx-line 0.5s var(--m-ease) calc(var(--k, 0) * 70ms + 300ms) backwards; }
+html[data-motion="full"] .is-seen .sx-check { animation: sx-in 0.4s var(--m-ease) calc(var(--k, 0) * 500ms + 1.2s) backwards; }
+
+html[data-motion="full"] .sx-ping { animation: sx-ping 2.4s ease-out infinite; }
+html[data-motion="full"] .sx-caret { animation: sx-blink 1.1s steps(1) infinite; }
+html[data-motion="full"] .sx-hl3 { animation: sx-hl3 4.5s ease-in-out calc(var(--k, 0) * 1.5s) infinite; }
+html[data-motion="full"] .sx-hl4 { animation: sx-hl4 6s ease-in-out calc(var(--k, 0) * 1.5s) infinite; }
+html[data-motion="full"] .sx-hl6 { animation: sx-hl6 9s ease-in-out calc(var(--k, 0) * 1.5s) infinite; }
+html[data-motion="full"] .sx-sweep4 { opacity: 1; animation: sx-sweep4 8s var(--m-ease) infinite; }
+html[data-motion="full"] .sx-sweep6 { opacity: 1; animation: sx-sweep6 12s var(--m-ease) infinite; }
+html[data-motion="full"] .sx-swap-out { animation: sx-swap-out 9s ease-in-out infinite; }
+html[data-motion="full"] .sx-swap-in { animation: sx-swap-in 9s ease-in-out infinite; }
+html[data-motion="full"] .sx-cursor { display: block; animation: sx-cursor 9s var(--m-ease) infinite; }
+html[data-motion="full"] .sx-cursor-drag { animation-name: sx-cursor-drag; animation-duration: 10s; }
+html[data-motion="full"] .sx-click { animation: sx-click 9s ease-in-out infinite; }
+html[data-motion="full"] .sx-cursor-drag .sx-click { animation-name: sx-grab; animation-duration: 10s; }
+html[data-motion="full"] .sx-drag { animation: sx-drag 10s var(--m-ease) infinite; }
+html[data-motion="full"] .sx-typing { animation: sx-typing 9s ease-in-out infinite; }
+html[data-motion="full"] .sx-dot { animation: sx-dot 1s ease-in-out calc(var(--k, 0) * 140ms) infinite; }
+html[data-motion="full"] .sx-msg { animation: sx-msg 9s var(--m-ease) infinite; }
+html[data-motion="full"] .sx-flip,
+html[data-motion="full"] .sx-flip-bg,
+html[data-motion="full"] .sx-flip-bg-inv { animation-duration: 7s; animation-timing-function: var(--m-ease); animation-iteration-count: infinite;
+  animation-delay: calc(var(--on, 0) * -3.5s + (1 - var(--on, 0)) * var(--k, 0) * 0.9s); }
+html[data-motion="full"] .sx-flip { animation-name: sx-flip; }
+html[data-motion="full"] .sx-flip-bg { animation-name: sx-flip-bg; }
+html[data-motion="full"] .sx-flip-bg-inv { animation-name: sx-flip-bg-inv; }
+html[data-motion="full"] .sx-fill { animation: sx-fill 7.2s ease-in-out calc(var(--k, 0) * 1.8s) infinite; }
+html[data-motion="full"] .sx-type { animation: sx-type 5s steps(14) infinite; }
 
 /* ── Scroll reveal, CSS-driven where the browser supports view timelines (Chromium, Safari 26+).
  * Elsewhere the IntersectionObserver path above does the job. The animation only fills backwards, so

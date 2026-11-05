@@ -32,6 +32,15 @@ export const en = {
     foundation: { label: "Foundation", description: "A shared layer or design principle, not a separate feature." },
   } satisfies Record<PartStatus, { label: string; description: string }>,
   device: { illustrative: "Illustrative screen" },
+  /** Interface wording drawn inside the illustrative screens. Generic UI words only: no people, customers or figures. */
+  screen: {
+    search: "Search people, projects, approvals",
+    workspace: "Your company workspace",
+    create: "New",
+    pending: "Pending",
+    approved: "Approved",
+    message: "Write a message",
+  },
   statusLegend: {
     title: "How to read the status labels",
     asOf: "Labels follow the NAVICORE ONE product specification, last dated",

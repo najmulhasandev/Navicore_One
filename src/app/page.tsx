@@ -26,7 +26,7 @@ export const metadata = pageMetadata({
 
 const wallScreen = (slug: string): WallScreen => {
   const p = mustGetPart(slug);
-  return { kind: p.screen, title: getCopy(p).name, labels: functionLabels(p) };
+  return { kind: p.screen, title: getCopy(p).name, labels: functionLabels(p), status: p.status, group: p.group };
 };
 
 /** Three columns of three illustrative screens, plus one straight focal screen: ten in all. */

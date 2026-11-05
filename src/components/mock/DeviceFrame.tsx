@@ -16,7 +16,8 @@ interface DeviceFrameProps {
 /**
  * Pure-CSS device and window frames with depth (bezel gradient, inner edge), a glass glare, a soft reflection
  * and fine grain. Fixed aspect ratios, so the layout never shifts while content loads.
- * Laptop and window frames carry an "Illustrative screen" label. The same frames show the responsive web app;
+ * Window frames carry the "Illustrative screen" label in their title bar; laptop and tablet screens draw it in their own
+ * header (ScreenMock "tag"). The same frames show the responsive web app;
  * they do not imply a native app, and nothing on them is a real screenshot.
  */
 export function DeviceFrame({ variant, children, title, className = "", compact = false }: DeviceFrameProps) {
@@ -29,7 +30,6 @@ export function DeviceFrame({ variant, children, title, className = "", compact 
         <div className="dev-bezel dev-grain relative rounded-t-[1.1rem] p-[2.2%]">
           <div className="dev-screen aspect-[16/10] overflow-hidden rounded-[0.5rem] bg-white">
             {children}
-            <span className="illus-tag">{label}</span>
             <i className="dev-glass" />
           </div>
         </div>

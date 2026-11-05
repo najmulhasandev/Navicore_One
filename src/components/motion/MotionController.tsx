@@ -48,6 +48,8 @@ export function MotionController() {
       for (const e of entries) {
         e.target.classList.toggle("is-on", e.isIntersecting);
         e.target.classList.toggle("is-off", !e.isIntersecting);
+        // One-way: lets one-shot entrances (e.g. the in-screen rise) play once, the first time a block is seen.
+        if (e.isIntersecting) e.target.classList.add("is-seen");
       }
     });
     const countIO = new IntersectionObserver(
