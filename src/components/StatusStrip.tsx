@@ -9,11 +9,11 @@ import { StatusDot } from "./ui/StatusDot";
 
 const STAGES: readonly PartStatus[] = ["live", "building", "planned", "future"];
 const BAR: Record<PartStatus, string> = {
-  live: "bg-maroon",
+  live: "bg-deep",
   building: "bg-rose",
-  planned: "bg-maroon/45",
+  planned: "bg-deep/45",
   future: "bg-ink-soft/40",
-  foundation: "bg-maroon",
+  foundation: "bg-deep",
 };
 /** How many part names to list under each stage (every Live area is listed). */
 const SHOWN: Record<PartStatus, number> = { live: 7, building: 4, planned: 4, future: 4, foundation: 0 };
@@ -30,7 +30,7 @@ export function StatusStrip() {
   const total = allParts.length;
 
   return (
-    <section className="defer [--cis-m:1740px] [--cis-d:876px] bg-white py-20 sm:py-28" aria-labelledby="status-title">
+    <section className="defer [--cis-m:1740px] [--cis-d:876px] bg-surface py-20 sm:py-28" aria-labelledby="status-title">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading id="status-title" eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
@@ -47,7 +47,7 @@ export function StatusStrip() {
               const rest = parts.length - shown.length;
               return (
                 <li key={s} className="tl-step relative pl-16 lg:pl-0 lg:pt-16" style={{ "--i": i } as React.CSSProperties}>
-                  <span aria-hidden="true" className="tl-node absolute left-0 top-0 grid h-11 w-11 place-items-center rounded-full bg-white text-lg text-maroon ring-2 ring-maroon">
+                  <span aria-hidden="true" className="tl-node absolute left-0 top-0 grid h-11 w-11 place-items-center rounded-full bg-surface text-lg text-maroon ring-2 ring-maroon">
                     <StatusDot status={s} className="!h-4 !w-4" />
                   </span>
                   <div className="flex items-baseline gap-3">

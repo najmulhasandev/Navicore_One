@@ -27,11 +27,11 @@ export default function PartnersPage() {
       <SectionHeading as="h1" eyebrow={`${p.eyebrow} · ${SITE.fullName}`} title={p.title} lead={p.lead} />
 
       <div className="mt-12 grid gap-5 md:grid-cols-2">
-        <section aria-labelledby="who" className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
+        <section aria-labelledby="who" className="rounded-3xl bg-surface p-7 shadow-soft ring-1 ring-baby-pink">
           <h2 id="who" className="font-display text-2xl font-semibold">{p.who.heading}</h2>
           <p className="mt-3 text-ink-soft">{p.who.fallback}</p>
         </section>
-        <section aria-labelledby="gets" className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
+        <section aria-labelledby="gets" className="rounded-3xl bg-surface p-7 shadow-soft ring-1 ring-baby-pink">
           <h2 id="gets" className="font-display text-2xl font-semibold">{p.gets.heading}</h2>
           <p className="mt-3 text-ink-soft">{p.gets.fallback}</p>
         </section>
@@ -42,7 +42,7 @@ export default function PartnersPage() {
         <ol className="mt-6 grid gap-4 sm:grid-cols-2">
           {p.apply.steps.map((s, i) => (
             <li key={s.title} className="rounded-2xl bg-blush p-5 ring-1 ring-baby-pink">
-              <span className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-maroon text-xs font-bold text-white">{i + 1}</span>
+              <span className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-deep text-xs font-bold text-white">{i + 1}</span>
               <h3 className="font-semibold text-maroon">{s.title}</h3>
               <p className="mt-1 text-ink-soft">{s.text}</p>
             </li>
@@ -58,7 +58,7 @@ export default function PartnersPage() {
             const part = mustGetPart(it.slug);
             return (
               <li key={it.slug}>
-                <Link href={partHref(part)} data-glow className="group block h-full rounded-2xl bg-white p-5 shadow-soft ring-1 ring-baby-pink hover:shadow-glow">
+                <Link href={partHref(part)} data-glow className="group block h-full rounded-2xl bg-surface p-5 shadow-soft ring-1 ring-baby-pink hover:shadow-glow">
                   <h3 className="font-display text-lg font-semibold group-hover:underline">{it.title}</h3>
                   <p className="mt-1 text-[0.95rem] text-ink-soft">{it.text}</p>
                   <span className="mt-3 block text-sm font-semibold text-red">Part {pad2(part.number)} →</span>

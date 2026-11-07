@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { PartStatus } from "@/content/types";
+import { BRAND } from "@/content/brand";
 import { getMessages } from "@/i18n/messages";
 import { StatusDot } from "../ui/StatusDot";
 import { statusLook } from "../ui/StatusBadge";
@@ -26,20 +27,20 @@ export const Line = ({ i = 0, cls = "bg-baby-pink", h = "1.2cqw" }: { i?: number
   <i className={`block rounded-full ${cls}`} style={{ width: `${W[i % W.length]}%`, height: h }} />
 );
 
-const tones = ["from-rose to-baby-pink", "from-maroon to-red", "from-red to-rose"] as const;
+const tones = ["from-rose to-baby-pink", "from-deep to-red", "from-red to-rose"] as const;
 
 /** Abstract person marker (head and shoulders). Not a real person. */
 export function Avatar({ size = "3cqw", tone = 0, ping = false }: { size?: string; tone?: number; ping?: boolean }) {
   return (
     <span className="relative block shrink-0" style={{ height: size, width: size }}>
-      <span className={`absolute inset-0 overflow-hidden rounded-full bg-linear-to-br ring-1 ring-white ${tones[tone % 3]}`}>
+      <span className={`absolute inset-0 overflow-hidden rounded-full bg-linear-to-br ring-1 ring-surface ${tones[tone % 3]}`}>
         <i className="absolute left-1/2 top-[20%] h-[36%] w-[36%] -translate-x-1/2 rounded-full bg-white/90" />
         <i className="absolute -bottom-[16%] left-1/2 h-[50%] w-[70%] -translate-x-1/2 rounded-full bg-white/90" />
       </span>
       {ping ? (
         <span className="absolute -bottom-[6%] -right-[6%] block h-[34%] w-[34%]">
           <i className="sx sx-ping absolute inset-0 rounded-full bg-red" />
-          <i className="absolute inset-0 rounded-full bg-red ring-[0.3cqw] ring-white" />
+          <i className="absolute inset-0 rounded-full bg-red ring-[0.3cqw] ring-surface" />
         </span>
       ) : null}
     </span>
@@ -61,7 +62,7 @@ export function StatusChip({ status }: { status: PartStatus }) {
 export function StateChip({ done }: { done: boolean }) {
   const s = getMessages().screen;
   return (
-    <span className={`inline-block whitespace-nowrap rounded-full px-[1.2cqw] py-[0.5cqw] text-[1.4cqw] font-semibold ${done ? "bg-maroon text-white" : "bg-baby-pink text-maroon"}`}>
+    <span className={`inline-block whitespace-nowrap rounded-full px-[1.2cqw] py-[0.5cqw] text-[1.4cqw] font-semibold ${done ? "bg-deep text-white" : "bg-baby-pink text-maroon"}`}>
       {done ? s.approved : s.pending}
     </span>
   );
@@ -87,9 +88,23 @@ export function Cursor({ points, kind = "click" }: { points: readonly [string, s
   return (
     <div aria-hidden="true" className={`sx sx-cursor ${kind === "drag" ? "sx-cursor-drag" : ""} pointer-events-none absolute inset-0 z-10`} style={style as CSSProperties}>
       <svg viewBox="0 0 24 24" className="sx sx-click absolute left-0 top-0 h-[3.2cqw] w-[3.2cqw] drop-shadow-[0_1px_1px_rgb(42_10_16/0.45)]">
-        <path d="M4 2.5 5 21l4.6-5 4.4 6.4 3-2-4.4-6.4 6.8-.8z" fill="#fff" stroke="#6b1220" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M4 2.5 5 21l4.6-5 4.4 6.4 3-2-4.4-6.4 6.8-.8z" fill="#fff" className="stroke-(--cursor-stroke)" strokeWidth="1.5" strokeLinejoin="round" />
       </svg>
     </div>
+  );
+}
+
+/** App logo inside a screen: the light SVG, or the cyan lockup in the dark theme (CSS shows one; both are lazy). */
+export function MockLogo({ lightCls, darkCls }: { lightCls: string; darkCls: string }) {
+  const d = BRAND.logo.darkTheme;
+  const l = BRAND.logo.onLight;
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element -- official brand logo, tiny and decorative */}
+      <img src={l.src} alt="" width={l.width} height={l.height} loading="lazy" decoding="async" draggable={false} className={`logo-light w-auto ${lightCls}`} />
+      {/* eslint-disable-next-line @next/next/no-img-element -- dark-theme lockup, tiny and decorative */}
+      <img src={d.src} alt="" width={d.width} height={d.height} loading="lazy" decoding="async" draggable={false} className={`logo-dark w-auto ${darkCls}`} />
+    </>
   );
 }
 

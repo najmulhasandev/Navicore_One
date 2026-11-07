@@ -17,12 +17,12 @@ export function SectionHeading({ eyebrow, title, lead, as = "h2", align = "left"
   return (
     <div data-reveal className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
       {eyebrow ? (
-        <p className={`mb-4 text-sm font-semibold uppercase tracking-[0.18em] ${dark ? "text-baby-pink" : "text-red"}`}>{eyebrow}</p>
+        <p className={`mb-4 text-sm font-semibold uppercase tracking-[0.18em] ${dark ? "text-mist" : "text-red"}`}>{eyebrow}</p>
       ) : null}
       <Tag id={id} className={`font-display text-4xl font-extrabold tracking-[-0.04em] sm:text-5xl lg:text-6xl ${dark ? "text-white" : ""}`}>
         {title}
       </Tag>
-      {lead ? <p className={`mt-5 text-lg sm:text-xl ${dark ? "text-baby-pink" : "text-ink-soft"}`}>{lead}</p> : null}
+      {lead ? <p className={`mt-5 text-lg sm:text-xl ${dark ? "text-mist" : "text-ink-soft"}`}>{lead}</p> : null}
     </div>
   );
 }

@@ -3,11 +3,11 @@ import { getMessages } from "@/i18n/messages";
 import { StatusDot } from "./StatusDot";
 
 export const statusLook: Record<PartStatus, string> = {
-  live: "bg-maroon text-white",
+  live: "bg-deep text-white",
   building: "bg-baby-pink text-maroon ring-1 ring-inset ring-rose",
-  planned: "bg-white text-maroon ring-1 ring-inset ring-maroon/50",
+  planned: "bg-surface text-maroon ring-1 ring-inset ring-maroon/50",
   future: "bg-blush text-ink-soft ring-1 ring-inset ring-rose",
-  foundation: "bg-white text-maroon ring-1 ring-inset ring-maroon",
+  foundation: "bg-surface text-maroon ring-1 ring-inset ring-maroon",
 };
 
 /** Status is always told by the label and a shape, never by colour alone. */

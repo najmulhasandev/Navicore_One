@@ -64,7 +64,7 @@ export function HeroVisual() {
           {group("insight")}
         </FloatingCard>
       </div>
-      <p className="mt-14 text-center text-xs text-baby-pink sm:mt-16">{m.home.hero.caption}</p>
+      <p className="mt-14 text-center text-xs text-mist sm:mt-16">{m.home.hero.caption}</p>
     </div>
   );
 }

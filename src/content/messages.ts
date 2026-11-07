@@ -23,6 +23,7 @@ export const en = {
     bookDemo: "Book a demo",
     becomePartner: "Become a partner",
     menu: "Menu",
+    theme: "Dark theme",
   },
   status: {
     live: { label: "Live", description: "Screens for this area have shipped." },

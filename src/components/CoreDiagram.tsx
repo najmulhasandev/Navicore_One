@@ -62,11 +62,11 @@ export function CoreDiagram() {
           <Link
             href="/os/os-core-shared-services"
             data-live="lazy"
-            className="core-hub grid place-items-center rounded-3xl bg-maroon px-6 py-8 text-center text-white shadow-float md:absolute md:z-10 md:left-1/2 md:top-1/2 md:aspect-square md:w-[25%] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-full md:p-4"
+            className="core-hub grid place-items-center rounded-3xl bg-deep px-6 py-8 text-center text-white shadow-float md:absolute md:z-10 md:left-1/2 md:top-1/2 md:aspect-square md:w-[25%] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-full md:p-4"
           >
             <span>
               <span className="block font-display text-xl font-extrabold leading-tight tracking-[-0.03em] sm:text-2xl md:text-[clamp(1rem,2.3vw,1.7rem)]">{t.centerTitle}</span>
-              <span className="mt-1 block text-sm font-semibold text-baby-pink">{t.centerSub}</span>
+              <span className="mt-1 block text-sm font-semibold text-mist">{t.centerSub}</span>
             </span>
           </Link>
 
@@ -80,7 +80,7 @@ export function CoreDiagram() {
                 <Link
                   href={partHref(part)}
                   data-glow
-                  className="flex h-full flex-col items-center gap-1.5 rounded-2xl bg-white px-2.5 py-3 text-center shadow-soft ring-1 ring-baby-pink hover:shadow-glow"
+                  className="flex h-full flex-col items-center gap-1.5 rounded-2xl bg-surface px-2.5 py-3 text-center shadow-soft ring-1 ring-baby-pink hover:shadow-glow"
                 >
                   <span className="font-display text-[0.9rem] font-bold leading-tight tracking-[-0.02em] text-maroon md:text-[clamp(0.7rem,1.25vw,0.95rem)]">{getCopy(part).name}</span>
                   <StatusBadge status={part.status} className="!px-2 !py-0.5 !text-[0.65rem]" />

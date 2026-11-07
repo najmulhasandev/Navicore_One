@@ -7,12 +7,30 @@
  * Contrast (WCAG 2.x, computed): ink on white/blush/pink 18.3 / 17.3 / 14.1; maroon 12.1 / 11.5 / 9.3;
  * red 5.9 / 5.6 / 4.5 (use red text on white or blush, maroon text on pink); white on red 5.9; white on maroon 12.1.
  * Rose (#F4A9BA) is decorative only: borders, glows, fills. Never text.
+ *
+ * Themes: the values above are the LIGHT theme (the default and the original design). The DARK theme re-points the same
+ * variables under html[data-theme="dark"] (see "Dark theme" below), so every utility follows without a dark: variant.
+ * Token names describe the light palette; their role is what carries over:
+ *   white      always white (text on fills, glass overlays)      surface   card / panel fill (white | navy)
+ *   canvas     page background                                   blush     quiet panel fill
+ *   baby-pink  tint fill and hairline                            rose      decorative strokes and glows
+ *   red        accent (links, primary buttons: red | cyan)       on-red    text on an accent fill
+ *   maroon     strong text and outlines (maroon | near-white)    deep      fill that carries white text
+ *   mist       soft text on dark bands                           danger    errors (stays red in both themes)
+ *   void       the near-black of device hardware
  */
 @theme {
   --color-*: initial;
   --color-transparent: transparent;
   --color-current: currentColor;
   --color-white: #ffffff;
+  --color-canvas: #fff7f9;
+  --color-surface: #ffffff;
+  --color-deep: #6b1220;
+  --color-mist: #fadadf;
+  --color-on-red: #ffffff;
+  --color-danger: #c8102e;
+  --color-void: #2a0a10;
   --color-blush: #fff7f9;
   --color-baby-pink: #fadadf;
   --color-rose: #f4a9ba;
@@ -25,13 +43,26 @@
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: var(--font-display-face), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --shadow-soft: 0 1px 2px rgb(107 18 32 / 0.06), 0 12px 32px -12px rgb(107 18 32 / 0.18);
-  --shadow-float: 0 2px 4px rgb(107 18 32 / 0.08), 0 28px 60px -20px rgb(107 18 32 / 0.35);
-  --shadow-glow: 0 0 0 1px rgb(244 169 186 / 0.6), 0 12px 40px -8px rgb(244 169 186 / 0.7);
+  --shadow-soft: 0 1px 2px rgb(var(--shade) / 0.06), 0 12px 32px -12px rgb(var(--shade) / 0.18);
+  --shadow-float: 0 2px 4px rgb(var(--shade) / 0.08), 0 28px 60px -20px rgb(var(--shade) / 0.35);
+  --shadow-glow: 0 0 0 1px rgb(var(--glow-b) / 0.6), 0 12px 40px -8px rgb(var(--glow-b) / 0.7);
 }
 
 /* Plain CSS aliases of the brand tokens, for the few places that use hand-written CSS. */
 :root {
+  color-scheme: light;
+  /* Space-separated RGB triplets for the few places that need an alpha: shadows, glows, glass. */
+  --shade: 107 18 32;
+  --glow-a: 200 16 46;
+  --glow-b: 244 169 186;
+  --glow-c: 250 218 223;
+  --canvas-rgb: 255 247 249;
+  --line-rgb: 250 218 223;
+  --hero-accent: #fadadf;
+  --device-base-end: #d98a9d;
+  --cursor-stroke: #6b1220;
+  --btn-red-hover: #a60d25;
+  --btn-deep-hover: #4f0f19;
   --white: var(--color-white);
   --blush: var(--color-blush);
   --baby-pink: var(--color-baby-pink);
@@ -47,7 +78,7 @@
     -webkit-text-size-adjust: 100%;
   }
   body {
-    background: var(--color-blush);
+    background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
@@ -82,23 +113,23 @@
     font-weight: 600; font-size: 1rem; line-height: 1.1; text-decoration: none;
     transition: transform .25s var(--m-ease), box-shadow .2s ease, background-color .2s ease, color .2s ease;
   }
-  .btn-red { background: var(--color-red); color: var(--color-white); box-shadow: 0 10px 24px -10px rgb(200 16 46 / .6); }
-  .btn-red:hover { box-shadow: 0 14px 30px -10px rgb(200 16 46 / .75); }
-  .btn-maroon { background: var(--color-maroon); color: var(--color-white); }
-  .btn-outline { background: var(--color-white); color: var(--color-maroon); box-shadow: inset 0 0 0 2px var(--color-maroon); }
+  .btn-red { background: var(--color-red); color: var(--color-on-red); box-shadow: 0 10px 24px -10px rgb(var(--glow-a) / .6); }
+  .btn-red:hover { box-shadow: 0 14px 30px -10px rgb(var(--glow-a) / .75); }
+  .btn-maroon { background: var(--color-deep); color: var(--color-white); }
+  .btn-outline { background: var(--color-surface); color: var(--color-maroon); box-shadow: inset 0 0 0 2px var(--color-maroon); }
   .btn-outline:hover { background: var(--color-baby-pink); }
-  .btn-light { background: var(--color-white); color: var(--color-maroon); }
+  .btn-light { background: var(--color-surface); color: var(--color-maroon); }
   .btn-on-maroon { background: transparent; color: var(--color-white); box-shadow: inset 0 0 0 2px var(--color-baby-pink); }
   .btn-on-maroon:hover { background: rgb(255 255 255 / .12); }
   .btn-sm { min-height: 40px; padding: .5rem 1.15rem; font-size: .9rem; }
 
   /* ── Section backdrops: soft pink-to-white gradients ─────── */
-  .bg-section-soft { background: linear-gradient(180deg, var(--color-white) 0%, var(--color-blush) 55%, color-mix(in srgb, var(--color-baby-pink) 45%, var(--color-blush)) 100%); }
-  .bg-section-pink { background: linear-gradient(180deg, var(--color-blush) 0%, color-mix(in srgb, var(--color-baby-pink) 70%, var(--color-white)) 100%); }
+  .bg-section-soft { background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-blush) 55%, color-mix(in srgb, var(--color-baby-pink) 45%, var(--color-blush)) 100%); }
+  .bg-section-pink { background: linear-gradient(180deg, var(--color-blush) 0%, color-mix(in srgb, var(--color-baby-pink) 70%, var(--color-surface)) 100%); }
   .bg-hero { background:
       radial-gradient(60rem 30rem at 85% -10%, color-mix(in srgb, var(--color-rose) 38%, transparent), transparent 70%),
       radial-gradient(40rem 24rem at 0% 0%, color-mix(in srgb, var(--color-baby-pink) 75%, transparent), transparent 70%),
-      var(--color-blush); }
+      var(--color-canvas); }
 
   /* Below-the-fold sections are not rendered until they are near the viewport (cheaper first paint). */
   /* Below-the-fold sections skip rendering until near the viewport. The placeholder height (--cis-m phones,
@@ -128,12 +159,12 @@
 /* ── Device frames: depth, glass highlight, soft reflection, grain ───────── */
 @layer components {
   .dev-bezel {
-    background: linear-gradient(145deg, #8c1f33 0%, var(--color-maroon) 36%, #3d0a13 100%);
+    background: linear-gradient(145deg, #8c1f33 0%, var(--color-deep) 36%, #3d0a13 100%);
     box-shadow:
       inset 0 0 0 1px rgb(255 255 255 / 0.14),
       inset 0 2px 3px rgb(255 255 255 / 0.2),
-      0 2px 4px rgb(107 18 32 / 0.14),
-      0 34px 60px -24px rgb(107 18 32 / 0.6);
+      0 2px 4px rgb(var(--shade) / 0.14),
+      0 34px 60px -24px rgb(var(--shade) / 0.6);
   }
   .dev-screen { position: relative; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.35); }
   /* Diagonal glass glare, drawn over the screen. Decorative. */
@@ -152,7 +183,7 @@
   .dev-reflect { position: relative; }
   .dev-reflect::before {
     content: ""; position: absolute; left: 8%; right: 8%; bottom: -7%; height: 14%; z-index: -1; pointer-events: none;
-    background: radial-gradient(ellipse at 50% 0%, rgb(200 16 46 / 0.22), rgb(244 169 186 / 0.25) 45%, transparent 72%);
+    background: radial-gradient(ellipse at 50% 0%, rgb(var(--glow-a) / 0.22), rgb(var(--glow-b) / 0.25) 45%, transparent 72%);
     filter: blur(6px);
   }
 }
@@ -174,12 +205,12 @@
 @layer components {
   .bg-dark {
     background:
-      radial-gradient(70rem 36rem at 50% -14%, rgb(200 16 46 / 0.3), transparent 70%),
-      radial-gradient(46rem 30rem at 100% 100%, rgb(244 169 186 / 0.14), transparent 70%),
-      linear-gradient(180deg, #581019 0%, var(--color-maroon) 40%, #4a0c16 100%);
+      radial-gradient(70rem 36rem at 50% -14%, rgb(var(--glow-a) / 0.3), transparent 70%),
+      radial-gradient(46rem 30rem at 100% 100%, rgb(var(--glow-b) / 0.14), transparent 70%),
+      linear-gradient(180deg, #581019 0%, var(--color-deep) 40%, #4a0c16 100%);
   }
   .on-dark h1, .on-dark h2, .on-dark h3 { color: var(--color-white); }
-  .on-dark .btn-red { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.3), 0 12px 32px -8px rgb(200 16 46 / 0.85); }
+  .on-dark .btn-red { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.3), 0 12px 32px -8px rgb(var(--glow-a) / 0.85); }
   .on-dark .dev-bezel {
     box-shadow:
       inset 0 0 0 1px rgb(255 255 255 / 0.22),
@@ -187,7 +218,7 @@
       0 2px 4px rgb(0 0 0 / 0.2),
       0 40px 80px -30px rgb(0 0 0 / 0.65);
   }
-  .on-dark .dev-reflect::before { background: radial-gradient(ellipse at 50% 0%, rgb(244 169 186 / 0.4), rgb(200 16 46 / 0.2) 45%, transparent 72%); }
+  .on-dark .dev-reflect::before { background: radial-gradient(ellipse at 50% 0%, rgb(var(--glow-b) / 0.4), rgb(var(--glow-a) / 0.2) 45%, transparent 72%); }
 }
 
 /* ── How it works: stacked on phones, a pinned stage with crossfading screens on tall desktops ── */
@@ -225,7 +256,7 @@
   .core-hub { position: relative; }
   .core-dot {
     position: absolute; left: 50%; top: 50%; z-index: 0; width: 0.7rem; height: 0.7rem; margin: -0.35rem 0 0 -0.35rem;
-    border-radius: 9999px; background: var(--color-red); box-shadow: 0 0 0 4px rgb(200 16 46 / 0.18); opacity: 0; pointer-events: none;
+    border-radius: 9999px; background: var(--color-red); box-shadow: 0 0 0 4px rgb(var(--glow-a) / 0.18); opacity: 0; pointer-events: none;
   }
 }
 
@@ -237,10 +268,10 @@
     font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--color-ink-soft); background: var(--color-blush);
   }
-  .compare thead th.compare-one { background: var(--color-maroon); color: var(--color-white); }
+  .compare thead th.compare-one { background: var(--color-deep); color: var(--color-white); }
   .compare tbody th { width: 15%; font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--color-maroon); }
   .compare td { color: var(--color-ink-soft); }
-  .compare td.compare-one { background: color-mix(in srgb, var(--color-baby-pink) 35%, var(--color-white)); }
+  .compare td.compare-one { background: color-mix(in srgb, var(--color-baby-pink) 35%, var(--color-surface)); }
   .compare tbody tr:last-child > * { border-bottom: 0; }
   .compare-mark { display: inline-block; width: 1.25rem; font-weight: 700; }
   .compare td:last-child { width: 8.5rem; }
@@ -273,3 +304,119 @@
 
 /* ── FAQ ───────────────────────────────────────────────────── */
 .faq[open] .faq-icon { transform: rotate(45deg); }
+
+/* ── Dark theme ───────────────────────────────────────────────────────────
+ * Near-black navy canvas, cyan / teal accent (the "ONE" teal), soft cyan glow and a horizon arc, after the brand
+ * artwork. Same variables as the light theme, re-pointed. Light stays the default and is untouched.
+ * Contrast (WCAG 2.x, computed): ink on canvas / surface 14.3 / 12.9; ink-soft 8.1 / 7.2 (5.3 on the tint fill);
+ * maroon (strong text) 18.4 on canvas, 12.1 on the tint fill; red (cyan accent) 13.2 / 11.9 / 8.7 on canvas / surface / tint;
+ * on-red on cyan 12.3 (7.7 at the dark end of the button gradient); white on deep 10.7; mist on canvas 11.9; danger 8.2.
+ */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: #02050b;
+  --color-surface: #0a1522;
+  --color-blush: #07111c;
+  --color-baby-pink: #14323f;
+  --color-rose: #1d8fab;
+  --color-red: #18e8d8;
+  --color-maroon: #e9f5fa;
+  --color-deep: #0b4357;
+  --color-mist: #b4c9d6;
+  --color-on-red: #03121a;
+  --color-danger: #ff7a8c;
+  --color-void: #010308;
+  --color-ink: #cddae4;
+  --color-ink-soft: #8ea6b7;
+  --shade: 0 0 0;
+  --glow-a: 24 232 216;
+  --glow-b: 29 143 171;
+  --glow-c: 120 214 236;
+  --canvas-rgb: 2 5 11;
+  --line-rgb: 28 62 78;
+  --hero-accent: #18e8d8;
+  --device-base-end: #0f7a90;
+  --cursor-stroke: #02050b;
+  --btn-red-hover: #5ff3e8;
+  --btn-deep-hover: #0e5870;
+}
+html[data-theme="dark"] ::selection { background: #0f4f5c; color: #ffffff; }
+
+@layer components {
+  /* Primary button: cyan glow with dark text, the way "ONE" glows in the artwork. */
+  html[data-theme="dark"] .btn-red {
+    background-image: linear-gradient(135deg, #3ff3e6 0%, #18d6d8 55%, #14b4d4 100%);
+    box-shadow: 0 0 0 1px rgb(24 232 216 / 0.35), 0 10px 32px -8px rgb(24 232 216 / 0.55);
+  }
+  html[data-theme="dark"] .btn-red:hover { background-image: none; box-shadow: 0 0 0 1px rgb(24 232 216 / 0.5), 0 14px 40px -8px rgb(24 232 216 / 0.7); }
+  html[data-theme="dark"] .btn-outline { box-shadow: inset 0 0 0 2px rgb(24 232 216 / 0.5); }
+  html[data-theme="dark"] .btn-outline:hover { background: rgb(24 232 216 / 0.1); }
+  html[data-theme="dark"] .btn-light { background: rgb(255 255 255 / 0.08); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28); }
+  html[data-theme="dark"] .btn-light:hover { background: rgb(255 255 255 / 0.16); }
+  html[data-theme="dark"] .btn-on-maroon { box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.28); }
+
+  /* Page backdrops */
+  html[data-theme="dark"] .bg-hero {
+    background:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(24 232 216 / 0.10), transparent 70%),
+      radial-gradient(40rem 24rem at 0% 0%, rgb(8 120 200 / 0.14), transparent 70%),
+      var(--color-canvas);
+  }
+  html[data-theme="dark"] .bg-section-soft { background: linear-gradient(180deg, var(--color-canvas) 0%, #040a13 55%, #061320 100%); }
+  html[data-theme="dark"] .bg-section-pink { background: linear-gradient(180deg, #040a13 0%, #07151f 100%); }
+
+  /* Dark bands (hero, wall, final call to action): black navy with a cyan bloom. */
+  html[data-theme="dark"] .bg-dark {
+    background:
+      radial-gradient(64rem 30rem at 50% -12%, rgb(24 232 216 / 0.13), transparent 70%),
+      radial-gradient(38rem 28rem at 6% 36%, rgb(8 120 200 / 0.20), transparent 70%),
+      radial-gradient(34rem 24rem at 96% 70%, rgb(245 158 60 / 0.05), transparent 70%),
+      linear-gradient(180deg, #02050b 0%, #030a15 60%, #02060d 100%);
+  }
+  html[data-theme="dark"] .on-dark .btn-red { box-shadow: 0 0 0 1px rgb(24 232 216 / 0.4), 0 12px 40px -8px rgb(24 232 216 / 0.6); }
+  html[data-theme="dark"] .on-dark .dev-bezel {
+    box-shadow:
+      inset 0 0 0 1px rgb(120 214 236 / 0.28),
+      inset 0 2px 3px rgb(255 255 255 / 0.2),
+      0 2px 4px rgb(0 0 0 / 0.4),
+      0 40px 80px -30px rgb(0 0 0 / 0.85),
+      0 0 70px -24px rgb(24 232 216 / 0.32);
+  }
+  html[data-theme="dark"] .dev-bezel { background: linear-gradient(145deg, #2c5368 0%, #12303f 38%, #061219 100%); }
+
+  /* Horizon arc under the hero and the final call to action: a thin cyan rim over a deep navy limb. */
+  .horizon { display: none; }
+  html[data-theme="dark"] .horizon {
+    display: block; position: absolute; z-index: 0; pointer-events: none; left: 50%; top: var(--horizon-top, calc(100% - 9rem));
+    width: 170%; aspect-ratio: 1; translate: -50% 0; border-radius: 50%;
+    background: radial-gradient(closest-side at 50% 0%, #031019 0%, #02080f 40%, #02050b 100%);
+    box-shadow: 0 -2px 0 0 rgb(24 232 216 / 0.55), 0 -10px 36px 0 rgb(24 232 216 / 0.30), 0 -60px 140px 0 rgb(8 110 170 / 0.28);
+    -webkit-mask-image: linear-gradient(90deg, transparent 6%, #000 30%, #000 70%, transparent 94%);
+    mask-image: linear-gradient(90deg, transparent 6%, #000 30%, #000 70%, transparent 94%);
+  }
+
+  /* Footer: black navy with a cyan hairline instead of the maroon band. */
+  .site-footer { background: var(--color-deep); }
+  html[data-theme="dark"] .site-footer {
+    background: linear-gradient(180deg, #03080f 0%, #02050b 100%);
+    box-shadow: inset 0 1px 0 0 rgb(24 232 216 / 0.22);
+  }
+
+  /* The brand logo changes with the theme (see Logo.tsx and mock/MockLogo.tsx). */
+  .logo-dark { display: none; }
+  html[data-theme="dark"] .logo-dark { display: block; }
+  html[data-theme="dark"] .logo-light { display: none; }
+
+  /* 3D module icons are pink and maroon: recolour them to the cyan family in the dark theme. */
+  html[data-theme="dark"] .icon-float { filter: hue-rotate(188deg) saturate(1.15) brightness(0.9); }
+
+  /* Theme toggle: shows the mode it switches TO. */
+  .ti-sun { display: none; }
+  html[data-theme="dark"] .ti-sun { display: block; }
+  html[data-theme="dark"] .ti-moon { display: none; }
+}
+
+/* Gradient headline text: near-white to cyan in the dark theme. */
+html[data-theme="dark"] .accent-text {
+  background-image: linear-gradient(95deg, #ffffff 4%, #18e8d8 96%);
+}

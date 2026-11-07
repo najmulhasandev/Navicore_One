@@ -56,7 +56,7 @@ export function FloatingCard({
       <div className="fc-enter" style={enterVars}>
         <div className="fc-tilt" style={tiltVars}>
           <div
-            className={`fc-float ${bare ? "" : "rounded-2xl bg-white/90 shadow-float ring-1 ring-baby-pink backdrop-blur"} ${cardClassName}`}
+            className={`fc-float ${bare ? "" : "rounded-2xl bg-surface/90 shadow-float ring-1 ring-baby-pink backdrop-blur"} ${cardClassName}`}
             style={floatVars}
           >
             {children}

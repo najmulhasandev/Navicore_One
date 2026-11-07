@@ -27,7 +27,7 @@ export function FlowDiagram({ flow }: { flow: Flow }) {
   const cols = columnsFor(flow.steps.length);
 
   return (
-    <figure className="rounded-3xl bg-white p-5 shadow-soft ring-1 ring-baby-pink sm:p-7">
+    <figure className="rounded-3xl bg-surface p-5 shadow-soft ring-1 ring-baby-pink sm:p-7">
       <figcaption className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <h3 className="font-display text-xl font-semibold sm:text-2xl">{flow.title}</h3>
         <span className="text-xs text-ink-soft">{flow.source === "guide" ? m.part.flowGuide : m.part.flowComposed}</span>
@@ -43,7 +43,7 @@ export function FlowDiagram({ flow }: { flow: Flow }) {
               data-end-md={i % 2 === 1 ? "" : undefined}
               data-end-lg={(i + 1) % cols === 0 ? "" : undefined}
             >
-              <span className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-maroon text-xs font-bold text-white">{i + 1}</span>
+              <span className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-deep text-xs font-bold text-white">{i + 1}</span>
               <p className="font-semibold text-maroon">{s.label}</p>
               {s.detail ? <p className="mt-1 text-sm leading-snug text-ink-soft">{s.detail}</p> : null}
               <Right />
@@ -55,7 +55,7 @@ export function FlowDiagram({ flow }: { flow: Flow }) {
 
       {flow.kind === "fan" && first && (
         <div>
-          <div className="mx-auto w-fit max-w-full rounded-2xl bg-maroon px-6 py-4 text-center text-white shadow-soft">
+          <div className="mx-auto w-fit max-w-full rounded-2xl bg-deep px-6 py-4 text-center text-white shadow-soft">
             <p className="font-display text-lg font-semibold">{first.label}</p>
             {first.detail ? <p className="text-sm text-white/90">{first.detail}</p> : null}
           </div>
@@ -79,10 +79,10 @@ export function FlowDiagram({ flow }: { flow: Flow }) {
             <li
               key={`${s.label}-${i}`}
               className={`flex items-center gap-4 rounded-2xl px-5 py-3 ring-1 ring-baby-pink ${
-                i === 0 ? "bg-maroon text-white" : i % 2 ? "bg-white text-maroon" : "bg-baby-pink text-maroon"
+                i === 0 ? "bg-deep text-white" : i % 2 ? "bg-surface text-maroon" : "bg-baby-pink text-maroon"
               }`}
             >
-              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${i === 0 ? "bg-white text-maroon" : "bg-maroon text-white"}`}>{i + 1}</span>
+              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${i === 0 ? "bg-surface text-maroon" : "bg-deep text-white"}`}>{i + 1}</span>
               <span className="font-semibold">{s.label}</span>
             </li>
           ))}
