@@ -3,7 +3,7 @@ import { moduleGroups } from "@/content/module-groups";
 import { getMessages } from "@/i18n/messages";
 import { Calendar, Cards, Chat, Dashboard, Docs, Flow, Form, Kanban, Search, Settings, Table, Tree, type LFn } from "./screens";
 import { Phone } from "./Phone";
-import { Avatar, Bell, Magnifier, StatusChip } from "./ui";
+import { Avatar, Bell, Magnifier, MockLogo, StatusChip } from "./ui";
 
 /**
  * Illustrative NAVICORE ONE screens, drawn in CSS: the app shell (official logo, module navigation, search,
@@ -43,20 +43,19 @@ export function ScreenMock({ kind, labels, title, compact = false, status, group
   if (compact) return <Phone L={L} title={title} />;
 
   return (
-    <div aria-hidden="true" data-live="lazy" className="@container relative flex h-full w-full overflow-hidden bg-white text-left text-ink">
+    <div aria-hidden="true" data-live="lazy" className="@container relative flex h-full w-full overflow-hidden bg-surface text-left text-ink">
       <aside className="flex w-[20%] shrink-0 flex-col gap-[0.5cqw] border-r border-baby-pink bg-blush p-[1.3cqw]">
-        {/* eslint-disable-next-line @next/next/no-img-element -- official brand-kit logo, tiny and decorative */}
-        <img src="/brand/logo-light.svg" alt="" width={1314} height={481} loading="lazy" decoding="async" draggable={false} className="mb-[1.2cqw] h-[4.4cqw] w-auto self-start" />
+        <MockLogo lightCls="mb-[1.2cqw] h-[4.4cqw] self-start" darkCls="mb-[1.2cqw] h-[4.2cqw] self-start" />
         {navGroups(group).map((g) => {
           const on = g.id === group;
           return (
-            <div key={g.id} className={`flex items-center gap-[0.7cqw] rounded-[0.7cqw] px-[0.7cqw] py-[0.75cqw] ${on ? "bg-white font-semibold text-maroon shadow-[0_0_0_1px_var(--color-baby-pink)]" : "text-ink-soft"}`}>
+            <div key={g.id} className={`flex items-center gap-[0.7cqw] rounded-[0.7cqw] px-[0.7cqw] py-[0.75cqw] ${on ? "bg-surface font-semibold text-maroon shadow-[0_0_0_1px_var(--color-baby-pink)]" : "text-ink-soft"}`}>
               <i className={`block h-[1.5cqw] w-[1.5cqw] shrink-0 rounded-[0.4cqw] ${on ? "bg-red" : "bg-rose"}`} />
               <span className="min-w-0 truncate text-[1.4cqw] leading-tight">{g.name}</span>
             </div>
           );
         })}
-        <div className="mt-auto flex items-center gap-[0.8cqw] rounded-[0.8cqw] bg-white p-[0.9cqw] ring-1 ring-baby-pink">
+        <div className="mt-auto flex items-center gap-[0.8cqw] rounded-[0.8cqw] bg-surface p-[0.9cqw] ring-1 ring-baby-pink">
           <Avatar size="2.6cqw" tone={1} />
           <span className="min-w-0 truncate text-[1.4cqw] leading-tight text-ink-soft">{m.screen.workspace}</span>
         </div>
@@ -67,15 +66,15 @@ export function ScreenMock({ kind, labels, title, compact = false, status, group
           <span className="flex w-[46%] items-center gap-[0.9cqw] rounded-full bg-blush px-[1.4cqw] py-[0.9cqw] ring-1 ring-baby-pink">
             <Magnifier />
             <span className="min-w-0 truncate text-[1.5cqw] text-ink-soft">{m.screen.search}</span>
-            <i className="sx sx-caret ml-[-0.3cqw] block h-[1.7cqw] w-px shrink-0 bg-maroon" />
+            <i className="sx sx-caret ml-[-0.3cqw] block h-[1.7cqw] w-px shrink-0 bg-deep" />
           </span>
           <span className="ml-auto flex items-center gap-[1.4cqw]">
-            {tag ? <span className="shrink-0 whitespace-nowrap rounded-full bg-white px-[1.2cqw] py-[0.5cqw] text-[1.5cqw] font-semibold text-maroon ring-1 ring-baby-pink">{m.device.illustrative}</span> : null}
+            {tag ? <span className="shrink-0 whitespace-nowrap rounded-full bg-surface px-[1.2cqw] py-[0.5cqw] text-[1.5cqw] font-semibold text-maroon ring-1 ring-baby-pink">{m.device.illustrative}</span> : null}
             <span className="relative block">
               <Bell />
               <span className="absolute -right-[0.2cqw] -top-[0.2cqw] block h-[1.1cqw] w-[1.1cqw]">
                 <i className="sx sx-ping absolute inset-0 rounded-full bg-red" />
-                <i className="absolute inset-0 rounded-full bg-red ring-[0.3cqw] ring-white" />
+                <i className="absolute inset-0 rounded-full bg-red ring-[0.3cqw] ring-surface" />
               </span>
             </span>
             <Avatar size="3cqw" tone={1} />
@@ -86,7 +85,7 @@ export function ScreenMock({ kind, labels, title, compact = false, status, group
           <div className="flex items-center gap-[1.2cqw]">
             {title ? <p className="truncate font-display text-[2.7cqw] font-bold leading-none tracking-[-0.02em] text-maroon">{title}</p> : null}
             {status ? <StatusChip status={status} /> : null}
-            <span className="ml-auto shrink-0 rounded-full bg-red px-[1.8cqw] py-[0.8cqw] text-[1.5cqw] font-semibold text-white">+ {m.screen.create}</span>
+            <span className="ml-auto shrink-0 rounded-full bg-red px-[1.8cqw] py-[0.8cqw] text-[1.5cqw] font-semibold text-on-red">+ {m.screen.create}</span>
           </div>
           {kind === "dashboard" && <Dashboard L={L} />}
           {kind === "table" && <Table L={L} />}

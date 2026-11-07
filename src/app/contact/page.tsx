@@ -25,7 +25,7 @@ export default function ContactPage() {
             <h2 className="font-display text-xl font-semibold">{c.pricingTitle}</h2>
             <p className="mt-2 text-maroon">{c.pricingText}</p>
           </div>
-          <div className="rounded-3xl bg-white p-6 ring-1 ring-baby-pink">
+          <div className="rounded-3xl bg-surface p-6 ring-1 ring-baby-pink">
             <p className="text-ink-soft">{c.demoNote}</p>
           </div>
           {SHOW_TODOS ? <TodoNotes todos={[c.todoDemo, c.todoEmail]} /> : null}

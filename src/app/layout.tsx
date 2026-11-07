@@ -10,6 +10,7 @@ import { Header } from "@/components/layout/Header";
 import { StickyCta } from "@/components/layout/StickyCta";
 import { MotionController } from "@/components/motion/MotionController";
 import { motionInitScript } from "@/lib/motion-init";
+import { themeInitScript } from "@/lib/theme-init";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -23,7 +24,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: BRAND.theme.color,
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: BRAND.theme.color },
+    { media: "(prefers-color-scheme: dark)", color: BRAND.theme.darkColor },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -33,11 +38,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         {/* Sets data-motion before first paint. See src/lib/motion-init.ts. */}
         <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
+        {/* Sets data-theme (saved choice, then OS setting) before first paint. See src/lib/theme-init.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-maroon focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-deep focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
         >
           {m.skip}
         </a>

@@ -9,7 +9,7 @@ import { INTENTS, type FieldName, type Intent, initialContactState } from "@/lib
 type T = Messages["form"];
 
 const field =
-  "mt-1.5 block w-full min-h-12 rounded-2xl border-0 bg-white px-4 py-3 text-base text-ink shadow-sm ring-1 ring-rose placeholder:text-ink-soft focus:outline-none focus:ring-2 focus:ring-maroon aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-red";
+  "mt-1.5 block w-full min-h-12 rounded-2xl border-0 bg-surface px-4 py-3 text-base text-ink shadow-sm ring-1 ring-rose placeholder:text-ink-soft focus:outline-none focus:ring-2 focus:ring-maroon aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-danger";
 
 /**
  * Contact / partner form. Posts to a Next server action (validation and spam checks run on the server).
@@ -49,15 +49,15 @@ export function ContactForm({ t, defaultIntent = "demo" }: { t: T; defaultIntent
   });
   const Err = ({ n }: { n: FieldName }) =>
     err(n) ? (
-      <p id={`err-${n}`} className="mt-1.5 text-sm font-medium text-red">
+      <p id={`err-${n}`} className="mt-1.5 text-sm font-medium text-danger">
         {err(n)}
       </p>
     ) : null;
 
   return (
-    <form action={formAction} noValidate className="space-y-5 rounded-3xl bg-white p-6 shadow-soft ring-1 ring-baby-pink sm:p-8">
+    <form action={formAction} noValidate className="space-y-5 rounded-3xl bg-surface p-6 shadow-soft ring-1 ring-baby-pink sm:p-8">
       {state.status === "error" && state.message ? (
-        <p role="alert" className="rounded-2xl bg-blush p-4 text-base font-semibold text-red ring-1 ring-red">
+        <p role="alert" className="rounded-2xl bg-blush p-4 text-base font-semibold text-danger ring-1 ring-danger">
           {state.message}
         </p>
       ) : null}

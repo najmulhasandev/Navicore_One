@@ -9,7 +9,7 @@ export function PartCard({ part, showOutcome = true }: { part: OsPart; showOutco
     <Link
       href={partHref(part)}
       data-glow
-      className="group flex h-full flex-col gap-3 rounded-3xl bg-white p-5 shadow-soft ring-1 ring-baby-pink hover:shadow-glow"
+      className="group flex h-full flex-col gap-3 rounded-3xl bg-surface p-5 shadow-soft ring-1 ring-baby-pink hover:shadow-glow"
     >
       <div className="flex items-center justify-between gap-3">
         <span className="font-display text-sm font-semibold text-red">Part {pad2(part.number)}</span>

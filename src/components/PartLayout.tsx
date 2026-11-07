@@ -89,12 +89,12 @@ export function PartLayout({ part }: { part: OsPart }) {
         {/* problem -> what NAVICORE ONE does -> result */}
         <section className="mt-16" aria-label={m.part.problemTitle}>
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-baby-pink">
+            <div className="rounded-3xl bg-surface p-6 shadow-soft ring-1 ring-baby-pink">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-soft">{m.part.problem}</p>
               <p className="mt-3 leading-relaxed">{c.problem}</p>
             </div>
-            <div className="rounded-3xl bg-maroon p-6 text-white shadow-soft">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-baby-pink">{m.part.does}</p>
+            <div className="rounded-3xl bg-deep p-6 text-white shadow-soft">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-mist">{m.part.does}</p>
               <p className="mt-3 leading-relaxed">{c.does}</p>
             </div>
             <div className="rounded-3xl bg-baby-pink p-6 shadow-soft">
@@ -109,7 +109,7 @@ export function PartLayout({ part }: { part: OsPart }) {
           <H2 id="who">{m.part.whoWhen}</H2>
           <dl className="mt-6 grid gap-4 sm:grid-cols-2">
             {c.whoWhen.map((w) => (
-              <div key={w.who} className="rounded-2xl bg-white p-5 ring-1 ring-baby-pink">
+              <div key={w.who} className="rounded-2xl bg-surface p-5 ring-1 ring-baby-pink">
                 <dt className="font-display text-lg font-semibold text-maroon">{w.who}</dt>
                 <dd className="mt-1 text-ink-soft">{w.when}</dd>
               </div>
@@ -132,7 +132,7 @@ export function PartLayout({ part }: { part: OsPart }) {
           <H2 id="functions">{m.part.keyFunctions}</H2>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2">
             {c.functions.map((f) => (
-              <li key={f.name} className="rounded-2xl bg-white p-5 shadow-soft ring-1 ring-baby-pink">
+              <li key={f.name} className="rounded-2xl bg-surface p-5 shadow-soft ring-1 ring-baby-pink">
                 <h3 className="font-display text-lg font-semibold text-maroon">{f.name}</h3>
                 <p className="mt-1.5 leading-relaxed text-ink-soft">{f.line}</p>
               </li>
@@ -140,7 +140,7 @@ export function PartLayout({ part }: { part: OsPart }) {
           </ul>
 
           {part.scope.length > 0 ? (
-            <details className="mt-6 rounded-2xl bg-white p-5 ring-1 ring-baby-pink">
+            <details className="mt-6 rounded-2xl bg-surface p-5 ring-1 ring-baby-pink">
               <summary className="font-semibold text-maroon">
                 {m.part.scopeSummary} ({scopeCount} {m.part.scopeItems})
               </summary>
@@ -178,9 +178,9 @@ export function PartLayout({ part }: { part: OsPart }) {
         </section>
 
         {/* 8: CTA */}
-        <section className="mt-20 overflow-hidden rounded-[2rem] bg-maroon p-8 text-white sm:p-12" aria-labelledby="cta">
+        <section className="mt-20 overflow-hidden rounded-[2rem] bg-deep p-8 text-white sm:p-12" aria-labelledby="cta">
           <h2 id="cta" className="font-display text-3xl font-semibold !text-white sm:text-4xl">{m.part.cta}</h2>
-          <p className="mt-3 max-w-xl text-lg text-baby-pink">{m.part.ctaText}</p>
+          <p className="mt-3 max-w-xl text-lg text-mist">{m.part.ctaText}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href="/contact?intent=demo" className="btn btn-light">{m.nav.bookDemo}</Link>
             <Link href="/partners" className="btn btn-on-maroon">{m.nav.becomePartner}</Link>
@@ -192,13 +192,13 @@ export function PartLayout({ part }: { part: OsPart }) {
         {/* 9: previous / next */}
         <nav aria-label="Part navigation" className="mt-12 grid gap-4 sm:grid-cols-2">
           {prev ? (
-            <Link href={partHref(prev)} rel="prev" className="rounded-2xl bg-white p-5 ring-1 ring-baby-pink transition hover:shadow-glow">
+            <Link href={partHref(prev)} rel="prev" className="rounded-2xl bg-surface p-5 ring-1 ring-baby-pink transition hover:shadow-glow">
               <span className="text-xs font-bold uppercase tracking-wide text-ink-soft">← {m.part.prev}</span>
               <span className="mt-1 block font-display text-lg font-semibold text-maroon">{pad2(prev.number)} · {getCopy(prev).name}</span>
             </Link>
           ) : <span />}
           {next ? (
-            <Link href={partHref(next)} rel="next" className="rounded-2xl bg-white p-5 text-right ring-1 ring-baby-pink transition hover:shadow-glow sm:col-start-2">
+            <Link href={partHref(next)} rel="next" className="rounded-2xl bg-surface p-5 text-right ring-1 ring-baby-pink transition hover:shadow-glow sm:col-start-2">
               <span className="text-xs font-bold uppercase tracking-wide text-ink-soft">{m.part.next} →</span>
               <span className="mt-1 block font-display text-lg font-semibold text-maroon">{pad2(next.number)} · {getCopy(next).name}</span>
             </Link>

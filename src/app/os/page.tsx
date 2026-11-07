@@ -22,7 +22,7 @@ export default function ProductOverviewPage() {
 
       <nav aria-label="Groups" className="mt-10 flex flex-wrap gap-2">
         {groupsWithParts.map(({ group, parts }) => (
-          <Link key={group.id} href={`#${groupSlugAnchor(group.id)}`} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-maroon ring-1 ring-baby-pink hover:bg-baby-pink">
+          <Link key={group.id} href={`#${groupSlugAnchor(group.id)}`} className="rounded-full bg-surface px-4 py-2 text-sm font-semibold text-maroon ring-1 ring-baby-pink hover:bg-baby-pink">
             {group.name} <span className="text-ink-soft">({parts.length})</span>
           </Link>
         ))}

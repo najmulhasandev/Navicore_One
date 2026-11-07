@@ -28,11 +28,11 @@ export function FeatureBento() {
   const wide = new Set([0, 5]);
 
   return (
-    <section className="defer [--cis-m:2840px] [--cis-d:1376px] bg-white py-20 sm:py-28" aria-labelledby="different">
+    <section className="defer [--cis-m:2840px] [--cis-d:1376px] bg-surface py-20 sm:py-28" aria-labelledby="different">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading id="different" eyebrow={h.different.eyebrow} title={h.different.title} lead={h.different.lead} />
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-          <BigNumber n={allParts.length} label={h.bento.numbers.parts} i={0} tone="bg-maroon text-white" className="sm:col-span-2" />
+          <BigNumber n={allParts.length} label={h.bento.numbers.parts} i={0} tone="bg-deep text-white" className="sm:col-span-2" />
           <BigNumber n={moduleGroups.length} label={h.bento.numbers.groups} i={1} tone="bg-baby-pink text-maroon" />
           <BigNumber n={c.live} label={h.bento.numbers.live} i={2} tone="bg-blush text-maroon ring-1 ring-baby-pink" />
           {tiles.map((tile, i) => {

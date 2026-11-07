@@ -24,7 +24,7 @@ export function HowItWorks() {
   });
 
   return (
-    <section id="how" className="bg-white py-20 sm:py-28" aria-labelledby="how-title">
+    <section id="how" className="bg-surface py-20 sm:py-28" aria-labelledby="how-title">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading id="how-title" eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
         <div data-steps data-active="0" className="steps mt-12">
@@ -34,7 +34,7 @@ export function HowItWorks() {
                 <li key={part.slug} className="step" data-i={i}>
                   <div className="step-text">
                     <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-red">
-                      <span aria-hidden="true" className="grid h-8 w-8 place-items-center rounded-full bg-maroon font-display text-base font-bold tracking-normal text-white">{i + 1}</span>
+                      <span aria-hidden="true" className="grid h-8 w-8 place-items-center rounded-full bg-deep font-display text-base font-bold tracking-normal text-white">{i + 1}</span>
                       {t.stepLabel} {i + 1}
                     </p>
                     <h3 className="mt-3 font-display text-3xl font-extrabold tracking-[-0.035em] sm:text-4xl">{copy.name}</h3>

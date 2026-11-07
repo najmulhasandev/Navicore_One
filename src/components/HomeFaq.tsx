@@ -30,7 +30,7 @@ export function HomeFaq() {
   const todos = t.items.flatMap((i) => ("todo" in i ? [i.todo] : []));
 
   return (
-    <section className="defer [--cis-m:640px] [--cis-d:476px] bg-white py-20 sm:py-28" aria-labelledby="faq-title">
+    <section className="defer [--cis-m:640px] [--cis-d:476px] bg-surface py-20 sm:py-28" aria-labelledby="faq-title">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr]">
         <SectionHeading id="faq-title" eyebrow={t.eyebrow} title={t.title} />
         <div>
@@ -40,7 +40,7 @@ export function HomeFaq() {
                 <details className="faq group px-6 py-5 sm:px-8">
                   <summary className="flex items-center justify-between gap-6 font-display text-lg font-bold tracking-[-0.02em] text-maroon sm:text-xl">
                     {item.q}
-                    <span aria-hidden="true" className="faq-icon grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-xl leading-none text-maroon ring-1 ring-baby-pink">+</span>
+                    <span aria-hidden="true" className="faq-icon grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface text-xl leading-none text-maroon ring-1 ring-baby-pink">+</span>
                   </summary>
                   <div className="mt-3 max-w-2xl text-ink-soft">
                     <p>{fill(item.a)}</p>

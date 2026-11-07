@@ -7,9 +7,9 @@ import { Icon3D } from "./Icon3D";
 import { StatusDot } from "./ui/StatusDot";
 
 const pill =
-  "marquee-pill inline-flex items-center gap-3 rounded-full bg-white py-2 pl-2 pr-5 text-[0.95rem] font-semibold text-maroon shadow-soft ring-1 ring-baby-pink";
+  "marquee-pill inline-flex items-center gap-3 rounded-full bg-surface py-2 pl-2 pr-5 text-[0.95rem] font-semibold text-maroon shadow-soft ring-1 ring-baby-pink";
 const factPill =
-  "inline-flex h-[3.25rem] items-center gap-2.5 rounded-full bg-maroon px-5 text-[0.95rem] font-semibold text-white";
+  "inline-flex h-[3.25rem] items-center gap-2.5 rounded-full bg-deep px-5 text-[0.95rem] font-semibold text-white";
 
 /**
  * A looping row: product facts (computed from the data) followed by the module groups with their 3D icons.
@@ -34,7 +34,7 @@ export function ModuleMarquee() {
           {facts.map((t) => (
             <li key={t}>
               <span className={factPill}>
-                <span className="text-baby-pink"><StatusDot status="live" /></span>
+                <span className="text-mist"><StatusDot status="live" /></span>
                 {t}
               </span>
             </li>
@@ -52,7 +52,7 @@ export function ModuleMarquee() {
           {facts.map((t) => (
             <li key={t}>
               <span className={factPill}>
-                <span className="text-baby-pink"><StatusDot status="live" /></span>
+                <span className="text-mist"><StatusDot status="live" /></span>
                 {t}
               </span>
             </li>

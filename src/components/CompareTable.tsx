@@ -23,7 +23,7 @@ export function CompareTable() {
     <section className="defer [--cis-m:2140px] [--cis-d:926px] bg-blush py-20 sm:py-28" aria-labelledby="compare-title">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading id="compare-title" eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
-        <div data-reveal className="mt-12 overflow-hidden rounded-[2rem] bg-white shadow-soft ring-1 ring-baby-pink">
+        <div data-reveal className="mt-12 overflow-hidden rounded-[2rem] bg-surface shadow-soft ring-1 ring-baby-pink">
           <table className="compare w-full text-left">
             <caption className="sr-only">{t.title}</caption>
             <thead>

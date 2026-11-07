@@ -24,7 +24,7 @@ export function HeroStatus() {
             href="#build-status"
             className="inline-flex items-center gap-2.5 rounded-full bg-white/10 py-2 pl-3.5 pr-4 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur-sm transition-colors hover:bg-white/20"
           >
-            <span className="text-baby-pink">{chip.dot}</span>
+            <span className="text-mist">{chip.dot}</span>
             {chip.text.replace("{n}", String(chip.n))}
           </a>
         </li>

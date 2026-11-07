@@ -22,7 +22,7 @@ export function SponsorSection() {
         </div>
 
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          <article data-reveal data-glow style={{ "--i": 0 } as React.CSSProperties} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
+          <article data-reveal data-glow style={{ "--i": 0 } as React.CSSProperties} className="rounded-3xl bg-surface p-7 shadow-soft ring-1 ring-baby-pink">
             <h3 className="font-display text-xl font-semibold">{t.existsTitle}</h3>
             <p className="mt-2 text-sm text-ink-soft">{t.existsText}</p>
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -36,13 +36,13 @@ export function SponsorSection() {
             </ul>
           </article>
 
-          <article data-reveal data-glow style={{ "--i": 1 } as React.CSSProperties} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
+          <article data-reveal data-glow style={{ "--i": 1 } as React.CSSProperties} className="rounded-3xl bg-surface p-7 shadow-soft ring-1 ring-baby-pink">
             <h3 className="font-display text-xl font-semibold">{t.plannedTitle}</h3>
             <p className="mt-2 text-sm text-ink-soft">{t.plannedText}</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {later.map((p) => (
                 <li key={p.slug}>
-                  <Link href={partHref(p)} className="inline-block rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-maroon ring-1 ring-maroon/40 hover:bg-baby-pink">
+                  <Link href={partHref(p)} className="inline-block rounded-full bg-surface px-3 py-1.5 text-sm font-semibold text-maroon ring-1 ring-maroon/40 hover:bg-baby-pink">
                     {getCopy(p).name}
                   </Link>
                 </li>
@@ -50,7 +50,7 @@ export function SponsorSection() {
             </ul>
           </article>
 
-          <article data-reveal data-glow style={{ "--i": 2 } as React.CSSProperties} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-baby-pink">
+          <article data-reveal data-glow style={{ "--i": 2 } as React.CSSProperties} className="rounded-3xl bg-surface p-7 shadow-soft ring-1 ring-baby-pink">
             <h3 className="font-display text-xl font-semibold">{t.teamTitle}</h3>
             <div className="mt-4">
               <p className="font-display text-lg font-semibold text-maroon">{FOUNDER.name}</p>

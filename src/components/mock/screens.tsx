@@ -35,11 +35,11 @@ export function Dashboard({ L }: { L: LFn }) {
           <div key={i} className={`sx sx-in ${card} p-[1.3cqw]`} style={k(i)}>
             <div className="flex items-center justify-between gap-[1cqw]">
               <T cls="text-ink-soft">{L(i)}</T>
-              <i className={`block h-[1.5cqw] w-[1.5cqw] shrink-0 rounded-full ${i === 1 ? "bg-red" : "bg-maroon"}`} />
+              <i className={`block h-[1.5cqw] w-[1.5cqw] shrink-0 rounded-full ${i === 1 ? "bg-red" : "bg-deep"}`} />
             </div>
             <Spark i={i} />
-            <span className="mt-[0.8cqw] block h-[0.9cqw] rounded-full bg-white">
-              <i className="sx sx-grow block h-full origin-left rounded-full bg-maroon" style={k(i, { width: `${[64, 48, 78][i]}%` })} />
+            <span className="mt-[0.8cqw] block h-[0.9cqw] rounded-full bg-surface">
+              <i className="sx sx-grow block h-full origin-left rounded-full bg-deep" style={k(i, { width: `${[64, 48, 78][i]}%` })} />
             </span>
           </div>
         ))}
@@ -50,7 +50,7 @@ export function Dashboard({ L }: { L: LFn }) {
             <T cls="font-semibold text-maroon">{L(3)}</T>
             <span className="flex gap-[0.7cqw]">
               {[0, 1, 2].map((p) => (
-                <i key={p} className={`block h-[1.2cqw] w-[3.2cqw] rounded-full ${p === 1 ? "bg-maroon" : "bg-baby-pink"}`} />
+                <i key={p} className={`block h-[1.2cqw] w-[3.2cqw] rounded-full ${p === 1 ? "bg-deep" : "bg-baby-pink"}`} />
               ))}
             </span>
           </div>
@@ -65,14 +65,14 @@ export function Dashboard({ L }: { L: LFn }) {
             <i className="sx sx-cover absolute inset-0 origin-right scale-x-0 bg-blush" style={k(2)} />
             <span className="absolute right-0 top-[27.8%] block h-[1.8cqw] w-[1.8cqw] -translate-y-1/2 translate-x-1/2">
               <i className="sx sx-ping absolute inset-0 rounded-full bg-red" />
-              <i className="absolute inset-0 rounded-full bg-red ring-[0.4cqw] ring-white" />
+              <i className="absolute inset-0 rounded-full bg-red ring-[0.4cqw] ring-surface" />
             </span>
           </div>
         </div>
         <div className={`sx sx-in flex flex-col ${card} p-[1.3cqw]`} style={k(4)}>
           <T cls="font-semibold text-maroon">{L(4)}</T>
           <div className="relative mt-[0.8cqw] flex min-h-0 flex-1 flex-col">
-            <i className="sx sx-sweep4 absolute inset-x-0 top-0 h-1/4 rounded-[0.8cqw] bg-white opacity-0 ring-1 ring-baby-pink" />
+            <i className="sx sx-sweep4 absolute inset-x-0 top-0 h-1/4 rounded-[0.8cqw] bg-surface opacity-0 ring-1 ring-baby-pink" />
             {[5, 6, 7, 8].map((n, r) => (
               <div key={n} className="relative flex flex-1 items-center gap-[1cqw]">
                 <Avatar size="2.6cqw" tone={r} />
@@ -102,19 +102,19 @@ export function Table({ L }: { L: LFn }) {
       <div className={`flex min-h-0 flex-1 flex-col overflow-hidden ${card}`}>
         <div className="grid grid-cols-[2fr_1.2fr_0.9fr_0.5fr] items-center gap-[2cqw] bg-baby-pink/60 px-[1.6cqw] py-[1cqw]">
           {[0, 1, 2, 3].map((i) => (
-            <i key={i} className="block h-[1cqw] rounded-full bg-maroon/40" style={{ width: `${[46, 38, 50, 40][i]}%` }} />
+            <i key={i} className="block h-[1cqw] rounded-full bg-deep/40" style={{ width: `${[46, 38, 50, 40][i]}%` }} />
           ))}
         </div>
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <i className="sx sx-sweep6 absolute inset-x-0 top-0 h-[16.666%] bg-white/80 opacity-0" />
+          <i className="sx sx-sweep6 absolute inset-x-0 top-0 h-[16.666%] bg-surface/80 opacity-0" />
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="sx sx-in relative grid flex-1 grid-cols-[2fr_1.2fr_0.9fr_0.5fr] items-center gap-[2cqw] border-b border-baby-pink/70 px-[1.6cqw] last:border-0" style={k(i)}>
               <span className="flex min-w-0 items-center gap-[1cqw]">
                 <Avatar size="2.4cqw" tone={i} />
                 <T>{L(i)}</T>
               </span>
-              <span className="block h-[0.9cqw] rounded-full bg-white">
-                <i className="sx sx-grow block h-full origin-left rounded-full bg-maroon" style={k(i, { width: `${W[i + 1]}%` })} />
+              <span className="block h-[0.9cqw] rounded-full bg-surface">
+                <i className="sx sx-grow block h-full origin-left rounded-full bg-deep" style={k(i, { width: `${W[i + 1]}%` })} />
               </span>
               {i === 1 ? <ApproveChip /> : <StateChip done={i % 3 === 0} />}
               <i className="block h-[1.1cqw] w-[60%] rounded-full bg-rose" />
@@ -135,13 +135,13 @@ export function Kanban({ L }: { L: LFn }) {
         {counts.map((n, c) => (
           <div key={c} className={`sx sx-in flex flex-col gap-[1.2cqw] ${card} p-[1.3cqw]`} style={k(c)}>
             <div className="flex items-center gap-[0.9cqw]">
-              <i className={`block h-[1.3cqw] w-[1.3cqw] rounded-full ${["bg-rose", "bg-red", "bg-maroon"][c]}`} />
+              <i className={`block h-[1.3cqw] w-[1.3cqw] rounded-full ${["bg-rose", "bg-red", "bg-deep"][c]}`} />
               <T cls="font-semibold text-maroon">{L(c)}</T>
             </div>
             {Array.from({ length: n }).map((_, r) => {
               const dragged = c === 1 && r === 0;
               return (
-                <div key={r} className={`${dragged ? "sx sx-drag relative z-10" : ""} rounded-[0.8cqw] bg-white p-[1.2cqw] ring-1 ring-baby-pink shadow-[0_1px_2px_rgb(107_18_32/0.08)]`}>
+                <div key={r} className={`${dragged ? "sx sx-drag relative z-10" : ""} rounded-[0.8cqw] bg-surface p-[1.2cqw] ring-1 ring-baby-pink shadow-[0_1px_2px_rgb(107_18_32/0.08)]`}>
                   <i className="block h-[1cqw] w-[34%] rounded-full bg-rose" />
                   <div className="mt-[0.9cqw]"><Line i={c * 2 + r} cls="bg-baby-pink" h="1.2cqw" /></div>
                   <div className="mt-[0.6cqw]"><Line i={c * 2 + r + 5} cls="bg-blush" h="1cqw" /></div>
@@ -151,7 +151,7 @@ export function Kanban({ L }: { L: LFn }) {
                       <Avatar size="2.2cqw" tone={c + r + 1} />
                     </span>
                     <span className="block h-[0.9cqw] w-[36%] rounded-full bg-baby-pink">
-                      <i className="sx sx-grow block h-full origin-left rounded-full bg-maroon" style={k(c + r, { width: `${[70, 40, 90, 55, 30, 80][c + r]}%` })} />
+                      <i className="sx sx-grow block h-full origin-left rounded-full bg-deep" style={k(c + r, { width: `${[70, 40, 90, 55, 30, 80][c + r]}%` })} />
                     </span>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export function Calendar({ L }: { L: LFn }) {
           {[0, 1].map((i) => (
             <i key={i} className="block h-[2.6cqw] w-[2.6cqw] rounded-full bg-blush ring-1 ring-baby-pink" />
           ))}
-          <i className="block h-[2.6cqw] w-[9cqw] rounded-full bg-maroon" />
+          <i className="block h-[2.6cqw] w-[9cqw] rounded-full bg-deep" />
         </span>
       </div>
       <div className="grid grid-cols-7 gap-[1cqw] px-[0.4cqw]">
@@ -189,10 +189,10 @@ export function Calendar({ L }: { L: LFn }) {
           const ev = events.get(i);
           const pick = picks.indexOf(i);
           return (
-            <div key={i} className={`sx sx-in relative rounded-[0.7cqw] p-[0.7cqw] ${i === 16 ? "bg-white ring-2 ring-red" : "bg-blush ring-1 ring-baby-pink"}`} style={k((i % 7) + Math.floor(i / 7))}>
+            <div key={i} className={`sx sx-in relative rounded-[0.7cqw] p-[0.7cqw] ${i === 16 ? "bg-surface ring-2 ring-red" : "bg-blush ring-1 ring-baby-pink"}`} style={k((i % 7) + Math.floor(i / 7))}>
               <i className="block h-[1cqw] w-[1cqw] rounded-full bg-baby-pink" />
               {ev !== undefined ? (
-                <i className={`sx sx-grow mt-[0.7cqw] block h-[1.4cqw] origin-left rounded-[0.4cqw] ${["bg-maroon", "bg-red", "bg-rose"][ev]}`} style={k(i % 7)} />
+                <i className={`sx sx-grow mt-[0.7cqw] block h-[1.4cqw] origin-left rounded-[0.4cqw] ${["bg-deep", "bg-red", "bg-rose"][ev]}`} style={k(i % 7)} />
               ) : null}
               {pick >= 0 ? <i className="sx sx-hl4 absolute inset-0 rounded-[0.7cqw] bg-white/0 opacity-0 ring-2 ring-maroon" style={k(pick)} /> : null}
             </div>
@@ -209,7 +209,7 @@ export function Chat({ L }: { L: LFn }) {
     <div className="grid min-h-0 flex-1 grid-cols-[30%_minmax(0,1fr)] gap-[1.4cqw]">
       <div className={`flex flex-col gap-[0.6cqw] ${card} p-[1cqw]`}>
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className={`sx sx-in flex items-center gap-[0.9cqw] rounded-[0.8cqw] px-[0.9cqw] py-[0.9cqw] ${i === 1 ? "bg-white ring-1 ring-baby-pink" : ""}`} style={k(i)}>
+          <div key={i} className={`sx sx-in flex items-center gap-[0.9cqw] rounded-[0.8cqw] px-[0.9cqw] py-[0.9cqw] ${i === 1 ? "bg-surface ring-1 ring-baby-pink" : ""}`} style={k(i)}>
             <Avatar size="2.6cqw" tone={i} ping={i === 2} />
             <T cls={i === 1 ? "font-semibold text-maroon" : "text-ink-soft"}>{L(i)}</T>
           </div>
@@ -217,19 +217,19 @@ export function Chat({ L }: { L: LFn }) {
       </div>
       <div className="flex min-h-0 flex-col gap-[1cqw]">
         {[0, 1, 2].map((i) => (
-          <div key={i} className={`sx sx-in rounded-[1.2cqw] px-[1.4cqw] py-[1.1cqw] ${i === 1 ? "self-end bg-maroon" : "bg-baby-pink"}`} style={k(i + 1, { width: `${[62, 46, 68][i]}%` })}>
-            <Line i={i + 3} cls={i === 1 ? "bg-white/85" : "bg-white"} h="1.1cqw" />
-            <div className="mt-[0.7cqw]"><Line i={i + 6} cls={i === 1 ? "bg-white/60" : "bg-white/80"} h="1.1cqw" /></div>
+          <div key={i} className={`sx sx-in rounded-[1.2cqw] px-[1.4cqw] py-[1.1cqw] ${i === 1 ? "self-end bg-deep" : "bg-baby-pink"}`} style={k(i + 1, { width: `${[62, 46, 68][i]}%` })}>
+            <Line i={i + 3} cls={i === 1 ? "bg-surface/85" : "bg-surface"} h="1.1cqw" />
+            <div className="mt-[0.7cqw]"><Line i={i + 6} cls={i === 1 ? "bg-surface/60" : "bg-surface/80"} h="1.1cqw" /></div>
           </div>
         ))}
         <div className="grid">
           <div className="sx sx-typing col-start-1 row-start-1 flex w-[16%] items-center justify-center gap-[0.7cqw] rounded-[1.2cqw] bg-baby-pink py-[1.3cqw] opacity-0">
             {[0, 1, 2].map((d) => (
-              <i key={d} className="sx sx-dot block h-[1cqw] w-[1cqw] rounded-full bg-maroon" style={k(d)} />
+              <i key={d} className="sx sx-dot block h-[1cqw] w-[1cqw] rounded-full bg-deep" style={k(d)} />
             ))}
           </div>
-          <div className="sx sx-msg col-start-1 row-start-1 w-[52%] self-end justify-self-end rounded-[1.2cqw] bg-maroon px-[1.4cqw] py-[1.1cqw] opacity-0">
-            <Line i={4} cls="bg-white/85" h="1.1cqw" />
+          <div className="sx sx-msg col-start-1 row-start-1 w-[52%] self-end justify-self-end rounded-[1.2cqw] bg-deep px-[1.4cqw] py-[1.1cqw] opacity-0">
+            <Line i={4} cls="bg-surface/85" h="1.1cqw" />
           </div>
         </div>
         <div className="mt-auto flex items-center gap-[1cqw] rounded-full bg-blush py-[0.9cqw] pl-[1.6cqw] pr-[0.9cqw] ring-1 ring-baby-pink">
@@ -247,11 +247,11 @@ export function Form({ L }: { L: LFn }) {
       {[0, 1, 2, 3].map((i) => (
         <div key={i} className="sx sx-in" style={k(i)}>
           <T cls="text-ink-soft">{L(i)}</T>
-          <span className={`mt-[0.6cqw] flex items-center gap-[1cqw] rounded-[0.8cqw] bg-white px-[1.4cqw] py-[1.1cqw] ring-1 ${i === 1 ? "ring-2 ring-red" : "ring-baby-pink"}`}>
+          <span className={`mt-[0.6cqw] flex items-center gap-[1cqw] rounded-[0.8cqw] bg-surface px-[1.4cqw] py-[1.1cqw] ring-1 ${i === 1 ? "ring-2 ring-red" : "ring-baby-pink"}`}>
             <span className="block h-[1.2cqw] flex-1">
               <i className="sx sx-grow block h-full origin-left rounded-full bg-baby-pink" style={k(i, { width: `${[62, 40, 74, 52][i]}%` })} />
             </span>
-            {i === 1 ? <i className="sx sx-caret block h-[2cqw] w-px bg-maroon" /> : null}
+            {i === 1 ? <i className="sx sx-caret block h-[2cqw] w-px bg-deep" /> : null}
             {i !== 1 ? <Check cls="sx sx-check text-maroon" /> : null}
           </span>
         </div>
@@ -266,7 +266,7 @@ export function Form({ L }: { L: LFn }) {
 
 export function Tree({ L }: { L: LFn }) {
   const node = (t: string, key: string, i: number, strong = false, hl = -1) => (
-    <div key={key} className={`sx sx-in relative flex items-center justify-center gap-[0.9cqw] rounded-[0.9cqw] px-[1.2cqw] py-[1.1cqw] ${strong ? "bg-maroon text-white" : "bg-white ring-1 ring-baby-pink"}`} style={k(i)}>
+    <div key={key} className={`sx sx-in relative flex items-center justify-center gap-[0.9cqw] rounded-[0.9cqw] px-[1.2cqw] py-[1.1cqw] ${strong ? "bg-deep text-white" : "bg-surface ring-1 ring-baby-pink"}`} style={k(i)}>
       <Avatar size="2.4cqw" tone={i} />
       <T>{t}</T>
       {hl >= 0 ? <i className="sx sx-hl3 absolute inset-0 rounded-[0.9cqw] opacity-0 ring-2 ring-red" style={k(hl)} /> : null}
@@ -294,9 +294,9 @@ export function Settings({ L, n = 6 }: { L: LFn; n?: number }) {
               <T cls="font-semibold">{L(i)}</T>
               <div className="mt-[0.6cqw] w-[60%]"><Line i={i + 2} cls="bg-baby-pink" h="1cqw" /></div>
             </span>
-            <span className={`relative block h-[2.8cqw] w-[5.2cqw] shrink-0 rounded-full ${on ? "bg-maroon" : "bg-rose"}`}>
-              <i className={`sx absolute inset-0 rounded-full opacity-0 ${on ? "sx-flip-bg-inv bg-rose" : "sx-flip-bg bg-maroon"}`} style={k(i, { "--on": on ? 1 : 0 })} />
-              <b className={`sx sx-flip absolute left-[0.4cqw] top-[0.4cqw] block h-[2cqw] w-[2cqw] rounded-full bg-white shadow-sm ${on ? "translate-x-[130%]" : ""}`} style={k(i, { "--on": on ? 1 : 0 })} />
+            <span className={`relative block h-[2.8cqw] w-[5.2cqw] shrink-0 rounded-full ${on ? "bg-deep" : "bg-rose"}`}>
+              <i className={`sx absolute inset-0 rounded-full opacity-0 ${on ? "sx-flip-bg-inv bg-rose" : "sx-flip-bg bg-deep"}`} style={k(i, { "--on": on ? 1 : 0 })} />
+              <b className={`sx sx-flip absolute left-[0.4cqw] top-[0.4cqw] block h-[2cqw] w-[2cqw] rounded-full bg-surface shadow-sm ${on ? "translate-x-[130%]" : ""}`} style={k(i, { "--on": on ? 1 : 0 })} />
             </span>
           </div>
         );
@@ -310,7 +310,7 @@ export function Docs({ L }: { L: LFn }) {
     <div className="grid min-h-0 flex-1 grid-cols-[28%_minmax(0,1fr)] gap-[1.4cqw]">
       <div className={`flex flex-col gap-[1cqw] ${card} p-[1.3cqw]`}>
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className={`sx sx-in flex items-center gap-[1cqw] rounded-[0.7cqw] px-[0.8cqw] py-[0.8cqw] ${i === 1 ? "bg-white ring-1 ring-baby-pink" : ""}`} style={k(i)}>
+          <div key={i} className={`sx sx-in flex items-center gap-[1cqw] rounded-[0.7cqw] px-[0.8cqw] py-[0.8cqw] ${i === 1 ? "bg-surface ring-1 ring-baby-pink" : ""}`} style={k(i)}>
             <i className={`block h-[2cqw] w-[2.6cqw] rounded-[0.4cqw] ${i === 1 ? "bg-red" : "bg-rose"}`} />
             <T cls={i === 1 ? "font-semibold text-maroon" : "text-ink-soft"}>{L(i)}</T>
           </div>
@@ -319,7 +319,7 @@ export function Docs({ L }: { L: LFn }) {
       <div className="grid grid-cols-3 gap-[1.2cqw]">
         {[4, 5, 6, 7, 8, 9].map((n, i) => (
           <div key={n} className={`sx sx-in relative flex flex-col ${card} p-[1.2cqw]`} style={k(i)}>
-            <div className="flex-1 rounded-[0.6cqw] bg-white p-[1cqw]">
+            <div className="flex-1 rounded-[0.6cqw] bg-surface p-[1cqw]">
               <Line i={i} cls="bg-baby-pink" h="0.9cqw" />
               <div className="mt-[0.7cqw]"><Line i={i + 3} cls="bg-blush" h="0.9cqw" /></div>
               <div className="mt-[0.7cqw]"><Line i={i + 6} cls="bg-blush" h="0.9cqw" /></div>
@@ -339,7 +339,7 @@ export function Flow({ L }: { L: LFn }) {
       <div className="flex items-center gap-[1cqw]">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="flex min-w-0 flex-1 items-center gap-[1cqw]">
-            <div className={`sx sx-in relative min-w-0 flex-1 rounded-[1cqw] px-[1cqw] py-[1.8cqw] text-center ${i === 3 ? "bg-maroon text-white" : "bg-white ring-1 ring-baby-pink"}`} style={k(i)}>
+            <div className={`sx sx-in relative min-w-0 flex-1 rounded-[1cqw] px-[1cqw] py-[1.8cqw] text-center ${i === 3 ? "bg-deep text-white" : "bg-surface ring-1 ring-baby-pink"}`} style={k(i)}>
               <T>{L(i)}</T>
               <i className="sx sx-hl4 absolute inset-0 rounded-[1cqw] opacity-0 ring-2 ring-red" style={k(i)} />
             </div>
@@ -353,7 +353,7 @@ export function Flow({ L }: { L: LFn }) {
       </div>
       <div className="flex items-center justify-center gap-[1cqw]">
         {[4, 5, 6].map((i) => (
-          <div key={i} className="sx sx-in min-w-0 flex-1 rounded-[1cqw] bg-white px-[1cqw] py-[1.4cqw] text-center ring-1 ring-baby-pink" style={k(i)}>
+          <div key={i} className="sx sx-in min-w-0 flex-1 rounded-[1cqw] bg-surface px-[1cqw] py-[1.4cqw] text-center ring-1 ring-baby-pink" style={k(i)}>
             <T>{L(i)}</T>
           </div>
         ))}
@@ -365,10 +365,10 @@ export function Flow({ L }: { L: LFn }) {
 export function Search({ L }: { L: LFn }) {
   return (
     <>
-      <div className="flex items-center gap-[1.2cqw] rounded-full bg-white px-[1.8cqw] py-[1.5cqw] ring-2 ring-rose">
+      <div className="flex items-center gap-[1.2cqw] rounded-full bg-surface px-[1.8cqw] py-[1.5cqw] ring-2 ring-rose">
         <i className="block h-[1.9cqw] w-[1.9cqw] shrink-0 rounded-full ring-[0.45cqw] ring-maroon" />
         <span className="block h-[1.4cqw] w-[44%]"><i className="sx sx-type block h-full origin-left rounded-full bg-baby-pink" /></span>
-        <i className="sx sx-caret block h-[2cqw] w-px bg-maroon" />
+        <i className="sx sx-caret block h-[2cqw] w-px bg-deep" />
         <T cls="ml-auto text-ink-soft">{L(0)}</T>
       </div>
       <div className="relative flex min-h-0 flex-1 flex-col gap-[1cqw]">
@@ -377,7 +377,7 @@ export function Search({ L }: { L: LFn }) {
             <T cls="font-semibold text-maroon">{L(g)}</T>
             <div className="mt-[0.9cqw] flex flex-col gap-[0.8cqw]">
               <Line i={g} cls="bg-baby-pink" h="1cqw" />
-              <Line i={g + 4} cls="bg-white" h="1cqw" />
+              <Line i={g + 4} cls="bg-surface" h="1cqw" />
             </div>
             <i className="sx sx-hl3 absolute inset-0 rounded-[1cqw] opacity-0 ring-2 ring-red" style={k(g - 1)} />
           </div>

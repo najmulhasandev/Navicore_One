@@ -44,7 +44,7 @@ export function Sidebar({ active }: { active?: OsPart }) {
 
   return (
     <>
-      <details className="rounded-2xl bg-white p-3 shadow-soft ring-1 ring-baby-pink lg:hidden">
+      <details className="rounded-2xl bg-surface p-3 shadow-soft ring-1 ring-baby-pink lg:hidden">
         <summary className="px-1 py-1 text-sm font-semibold text-maroon">{m.part.browse}</summary>
         <div className="mt-3">{list}</div>
       </details>
